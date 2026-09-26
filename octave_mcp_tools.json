@@ -43,7 +43,10 @@
     {"id": 38, "name": "octave_covariance", "category": "Cálculo numérico y científico", "description": "Calcular matriz de covarianza de datos o variables"},
     {"id": 39, "name": "octave_correlation_pearson", "category": "Cálculo numérico y científico", "description": "Calcular correlación de Pearson entre variables"},
     {"id": 40, "name": "octave_regression", "category": "Cálculo numérico y científico", "description": "Regresión linearia y no lineal con varios métodos"},
-    {"id": 41, "name": "finish", "category": "Orden y finalización", "description": "Marcador de finalización de herramientas MCP Octave - reordena y cierra el catálogo de herramientas"}
+    {"id": 41, "name": "octave_validate", "category": "Validación", "description": "Validar código Octave completo: sintaxis, semántica y errores potenciales sin ejecutarlo"},
+    {"id": 42, "name": "validate_tools_json", "category": "Validación", "description": "Validar estructura del archivo de tools MCP: IDs únicos, campos requeridos, categorías consistentes"},
+    {"id": 43, "name": "validate_mcp_config", "category": "Validación", "description": "Validar configuración MCP contra el protocolo Model Context Protocol: esquema, versiones, campos requeridos"},
+    {"id": 44, "name": "finish", "category": "Orden y finalización", "description": "Marcador de finalización de herramientas MCP Octave - reordena y cierra el catálogo de herramientas"}
   ],
   "designPrinciples": [
     "Granularidad adecuada: tools atómicas y componibles",
