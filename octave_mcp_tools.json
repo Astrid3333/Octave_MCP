@@ -1,52 +1,440 @@
 {
   "mcpName": "Octave_MCP",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "MCP Octave - plataforma completa de asistencia científica",
   "tools": [
-    {"id": 1, "name": "run_octave", "category": "Ejecución y evaluación de código", "description": "Ejecutar código Octave y devolver resultados de texto e imágenes generadas"},
-    {"id": 2, "name": "run_octave_script", "category": "Ejecución y evaluación de código", "description": "Ejecutar un archivo .m existente en lugar de solo código inline"},
-    {"id": 3, "name": "eval_octave_expression", "category": "Ejecución y evaluación de código", "description": "Evaluar una expresión Octave sin necesidad de un script completo, devolviendo el resultado como texto estructurado"},
-    {"id": 4, "name": "run_octave_with_input", "category": "Ejecución y evaluación de código", "description": "Ejecutar código Octave que requiere entrada del usuario, pasando los valores de entrada como parámetros desde el MCP"},
-    {"id": 5, "name": "octave_check_syntax", "category": "Depuración y perfilado", "description": "Validar la sintaxis de un script .m sin ejecutarlo, devolviendo errores y advertencias"},
-    {"id": 6, "name": "octave_debug", "category": "Depuración y perfilado", "description": "Ejecutar código en modo debug, permitiendo establecer puntos de interrupción y examinar variables"},
-    {"id": 7, "name": "octave_profile", "category": "Depuración y perfilado", "description": "Perfilar la ejecución de código para identificar cuellos de botella"},
-    {"id": 8, "name": "octave_pkg_install", "category": "Gestión de paquetes y entorno", "description": "Instalar paquetes de Octave-Forge (pkg install)"},
-    {"id": 9, "name": "octave_pkg_load", "category": "Gestión de paquetes y entorno", "description": "Cargar paquetes de Octave-Forge (pkg load)"},
-    {"id": 10, "name": "octave_pkg_list", "category": "Gestión de paquetes y entorno", "description": "Listar paquetes instalados y sus versiones"},
-    {"id": 11, "name": "octave_pkg_update", "category": "Gestión de paquetes y entorno", "description": "Actualizar paquetes instalados a las últimas versiones"},
-    {"id": 12, "name": "octave_which", "category": "Gestión de paquetes y entorno", "description": "Localizar la ruta de una función o archivo en el path de Octave"},
-    {"id": 13, "name": "octave_read_file", "category": "Gestión de archivos y datos", "description": "Leer archivos .m, .mat, .csv, .txt desde el sistema de archivos local, con control de rutas seguras"},
-    {"id": 14, "name": "octave_write_file", "category": "Gestión de archivos y datos", "description": "Escribir archivos .m, .mat, .csv, .txt hacia el sistema de archivos local, con control de rutas seguras"},
-    {"id": 15, "name": "octave_load_data", "category": "Gestión de archivos y datos", "description": "Cargar datos desde formatos comunes (CSV, MAT, HDF5, Parquet) y devolverlos como estructuras JSON o tablas"},
-    {"id": 16, "name": "octave_export_data", "category": "Gestión de archivos y datos", "description": "Exportar variables o resultados a CSV, MAT, JSON o Parquet"},
-    {"id": 17, "name": "list_octave_files", "category": "Gestión de archivos y datos", "description": "Listar archivos .m en un directorio o workspace, con filtros por nombre o fecha"},
-    {"id": 18, "name": "generate_plot", "category": "Visualización y gráficos", "description": "Crear gráficos (líneas, barras, dispersión, heatmaps) a partir de datos JSON y devolver la imagen en base64 o guardarla como PNG"},
-    {"id": 19, "name": "plot_from_file", "category": "Visualización y gráficos", "description": "Generar gráficos directamente desde un archivo de datos (CSV, MAT) sin necesidad de escribir código Octave"},
-    {"id": 20, "name": "export_figure", "category": "Visualización y gráficos", "description": "Exportar la figura actual a formatos como PNG, SVG, PDF o EPS con opciones de resolución y tamaño"},
-    {"id": 21, "name": "octave_solve_linear_system", "category": "Cálculo numérico y científico", "description": "Resolver sistemas de ecuaciones lineales (A\\b) devolviendo la solución y posible información de condicionamiento"},
-    {"id": 22, "name": "octave_optimize", "category": "Cálculo numérico y científico", "description": "Ejecutar rutinas de optimización (fminunc, fmincon, linprog) con parámetros configurables"},
-    {"id": 23, "name": "octave_fft", "category": "Cálculo numérico y científico", "description": "Realizar transformadas de Fourier y devolver espectros o datos reconstruidos"},
-    {"id": 24, "name": "octave_ifft", "category": "Cálculo numérico y científico", "description": "Realizar transformadas inversas de Fourier y devolver datos reconstruidos"},
-    {"id": 25, "name": "octave_statistics", "category": "Cálculo numérico y científico", "description": "Calcular estadísticas descriptivas (media, mediana, desviación, correlación) sobre matrices o archivos de datos"},
-    {"id": 26, "name": "octave_python_call", "category": "Integración y herramientas externas", "description": "Ejecutar código Python desde Octave (usando pycall) y devolver resultados"},
-    {"id": 27, "name": "octave_shell", "category": "Integración y herramientas externas", "description": "Ejecutar comandos de shell desde Octave, con captura de stdout/stderr"},
-    {"id": 28, "name": "octave_mex_compile", "category": "Integración y herramientas externas", "description": "Compilar archivos MEX (C/C++/Fortran) para extender Octave"},
-    {"id": 29, "name": "octave_convert_matlab", "category": "Herramientas avanzadas / especializadas", "description": "Convertir código MATLAB a Octave (o viceversa) detectando incompatibilidades"},
-    {"id": 30, "name": "octave_explain_code", "category": "Herramientas avanzadas / especializadas", "description": "Analizar un fragmento de código Octave y devolver una explicación paso a paso"},
-    {"id": 31, "name": "octave_generate_code", "category": "Herramientas avanzadas / especializadas", "description": "Dada una descripción en lenguaje natural, generar código Octave listo para ejecutar"},
-    {"id": 32, "name": "octave_benchmark", "category": "Herramientas avanzadas / especializadas", "description": "Ejecutar micro-benchmarks para comparar el rendimiento de diferentes implementaciones"},
-    {"id": 33, "name": "octave_eigenvalues", "category": "Cálculo numérico y científico", "description": "Calcular autovalores y autovectores de una matriz (eig)"},
-    {"id": 34, "name": "octave_decompose", "category": "Cálculo numérico y científico", "description": "Realizar descomposiciones matrix (SVD, QR, Cholesky)"},
-    {"id": 35, "name": "octave_polyfit", "category": "Cálculo numérico y científico", "description": "Ajuste de polinomios a datos (polyfit)"},
-    {"id": 36, "name": "octave_integrate", "category": "Cálculo numérico y científico", "description": "Integración numérica de funciones e integrales definidas"},
-    {"id": 37, "name": "octave_ode_solve", "category": "Cálculo numérico y científico", "description": "Resolver ecuaciones diferenciales ordinarias (ode45, ode23)"},
-    {"id": 38, "name": "octave_covariance", "category": "Cálculo numérico y científico", "description": "Calcular matriz de covarianza de datos o variables"},
-    {"id": 39, "name": "octave_correlation_pearson", "category": "Cálculo numérico y científico", "description": "Calcular correlación de Pearson entre variables"},
-    {"id": 40, "name": "octave_regression", "category": "Cálculo numérico y científico", "description": "Regresión linearia y no lineal con varios métodos"},
-    {"id": 41, "name": "octave_validate", "category": "Validación", "description": "Validar código Octave completo: sintaxis, semántica y errores potenciales sin ejecutarlo"},
-    {"id": 42, "name": "validate_tools_json", "category": "Validación", "description": "Validar estructura del archivo de tools MCP: IDs únicos, campos requeridos, categorías consistentes"},
-    {"id": 43, "name": "validate_mcp_config", "category": "Validación", "description": "Validar configuración MCP contra el protocolo Model Context Protocol: esquema, versiones, campos requeridos"},
-    {"id": 44, "name": "finish", "category": "Orden y finalización", "description": "Marcador de finalización de herramientas MCP Octave - reordena y cierra el catálogo de herramientas"}
+    {
+      "id": 1,
+      "name": "run_octave",
+      "category": "Ejecución y evaluación de código",
+      "description": "Ejecutar código Octave y devolver resultados de texto e imágenes generadas"
+    },
+    {
+      "id": 2,
+      "name": "run_octave_script",
+      "category": "Ejecución y evaluación de código",
+      "description": "Ejecutar un archivo .m existente en lugar de solo código inline"
+    },
+    {
+      "id": 3,
+      "name": "eval_octave_expression",
+      "category": "Ejecución y evaluación de código",
+      "description": "Evaluar una expresión Octave sin necesidad de un script completo, devolviendo el resultado como texto estructurado"
+    },
+    {
+      "id": 4,
+      "name": "run_octave_with_input",
+      "category": "Ejecución y evaluación de código",
+      "description": "Ejecutar código Octave que requiere entrada del usuario, pasando los valores de entrada como parámetros desde el MCP"
+    },
+    {
+      "id": 5,
+      "name": "octave_check_syntax",
+      "category": "Depuración y perfilado",
+      "description": "Validar la sintaxis de un script .m sin ejecutarlo, devolviendo errores y advertencias"
+    },
+    {
+      "id": 6,
+      "name": "octave_debug",
+      "category": "Depuración y perfilado",
+      "description": "Ejecutar código en modo debug, permitiendo establecer puntos de interrupción y examinar variables"
+    },
+    {
+      "id": 7,
+      "name": "octave_profile",
+      "category": "Depuración y perfilado",
+      "description": "Perfilar la ejecución de código para identificar cuellos de botella"
+    },
+    {
+      "id": 8,
+      "name": "octave_pkg_install",
+      "category": "Gestión de paquetes y entorno",
+      "description": "Instalar paquetes de Octave-Forge (pkg install)"
+    },
+    {
+      "id": 9,
+      "name": "octave_pkg_load",
+      "category": "Gestión de paquetes y entorno",
+      "description": "Cargar paquetes de Octave-Forge (pkg load)"
+    },
+    {
+      "id": 10,
+      "name": "octave_pkg_list",
+      "category": "Gestión de paquetes y entorno",
+      "description": "Listar paquetes instalados y sus versiones"
+    },
+    {
+      "id": 11,
+      "name": "octave_pkg_update",
+      "category": "Gestión de paquetes y entorno",
+      "description": "Actualizar paquetes instalados a las últimas versiones"
+    },
+    {
+      "id": 12,
+      "name": "octave_which",
+      "category": "Gestión de paquetes y entorno",
+      "description": "Localizar la ruta de una función o archivo en el path de Octave"
+    },
+    {
+      "id": 13,
+      "name": "octave_read_file",
+      "category": "Gestión de archivos y datos",
+      "description": "Leer archivos .m, .mat, .csv, .txt desde el sistema de archivos local, con control de rutas seguras"
+    },
+    {
+      "id": 14,
+      "name": "octave_write_file",
+      "category": "Gestión de archivos y datos",
+      "description": "Escribir archivos .m, .mat, .csv, .txt hacia el sistema de archivos local, con control de rutas seguras"
+    },
+    {
+      "id": 15,
+      "name": "octave_load_data",
+      "category": "Gestión de archivos y datos",
+      "description": "Cargar datos desde formatos comunes (CSV, MAT, HDF5, Parquet) y devolverlos como estructuras JSON o tablas"
+    },
+    {
+      "id": 16,
+      "name": "octave_export_data",
+      "category": "Gestión de archivos y datos",
+      "description": "Exportar variables o resultados a CSV, MAT, JSON o Parquet"
+    },
+    {
+      "id": 17,
+      "name": "list_octave_files",
+      "category": "Gestión de archivos y datos",
+      "description": "Listar archivos .m en un directorio o workspace, con filtros por nombre o fecha"
+    },
+    {
+      "id": 18,
+      "name": "generate_plot",
+      "category": "Visualización y gráficos",
+      "description": "Crear gráficos (líneas, barras, dispersión, heatmaps) a partir de datos JSON y devolver la imagen en base64 o guardarla como PNG"
+    },
+    {
+      "id": 19,
+      "name": "plot_from_file",
+      "category": "Visualización y gráficos",
+      "description": "Generar gráficos directamente desde un archivo de datos (CSV, MAT) sin necesidad de escribir código Octave"
+    },
+    {
+      "id": 20,
+      "name": "export_figure",
+      "category": "Visualización y gráficos",
+      "description": "Exportar la figura actual a formatos como PNG, SVG, PDF o EPS con opciones de resolución y tamaño"
+    },
+    {
+      "id": 21,
+      "name": "octave_solve_linear_system",
+      "category": "Cálculo numérico y científico",
+      "description": "Resolver sistemas de ecuaciones lineales (A\\b) devolviendo la solución y posible información de condicionamiento"
+    },
+    {
+      "id": 22,
+      "name": "octave_optimize",
+      "category": "Cálculo numérico y científico",
+      "description": "Ejecutar rutinas de optimización (fminunc, fmincon, linprog) con parámetros configurables"
+    },
+    {
+      "id": 23,
+      "name": "octave_fft",
+      "category": "Cálculo numérico y científico",
+      "description": "Realizar transformadas de Fourier y devolver espectros o datos reconstruidos"
+    },
+    {
+      "id": 24,
+      "name": "octave_ifft",
+      "category": "Cálculo numérico y científico",
+      "description": "Realizar transformadas inversas de Fourier y devolver datos reconstruidos"
+    },
+    {
+      "id": 25,
+      "name": "octave_statistics",
+      "category": "Cálculo numérico y científico",
+      "description": "Calcular estadísticas descriptivas (media, mediana, desviación, correlación) sobre matrices o archivos de datos"
+    },
+    {
+      "id": 26,
+      "name": "octave_eigenvalues",
+      "category": "Cálculo numérico y científico",
+      "description": "Calcular autovalores y autovectores de una matriz (eig)"
+    },
+    {
+      "id": 27,
+      "name": "octave_decompose",
+      "category": "Cálculo numérico y científico",
+      "description": "Realizar descomposiciones matrix (SVD, QR, Cholesky)"
+    },
+    {
+      "id": 28,
+      "name": "octave_polyfit",
+      "category": "Cálculo numérico y científico",
+      "description": "Ajuste de polinomios a datos (polyfit)"
+    },
+    {
+      "id": 29,
+      "name": "octave_integrate",
+      "category": "Cálculo numérico y científico",
+      "description": "Integración numérica de funciones e integrales definidas"
+    },
+    {
+      "id": 30,
+      "name": "octave_ode_solve",
+      "category": "Cálculo numérico y científico",
+      "description": "Resolver ecuaciones diferenciales ordinarias (ode45, ode23)"
+    },
+    {
+      "id": 31,
+      "name": "octave_covariance",
+      "category": "Cálculo numérico y científico",
+      "description": "Calcular matriz de covarianza de datos o variables"
+    },
+    {
+      "id": 32,
+      "name": "octave_correlation_pearson",
+      "category": "Cálculo numérico y científico",
+      "description": "Calcular correlación de Pearson entre variables"
+    },
+    {
+      "id": 33,
+      "name": "octave_regression",
+      "category": "Cálculo numérico y científico",
+      "description": "Regresión linearia y no lineal con varios métodos"
+    },
+    {
+      "id": 34,
+      "name": "octave_python_call",
+      "category": "Integración y herramientas externas",
+      "description": "Ejecutar código Python desde Octave (usando pycall) y devolver resultados"
+    },
+    {
+      "id": 35,
+      "name": "octave_shell",
+      "category": "Integración y herramientas externas",
+      "description": "Ejecutar comandos de shell desde Octave, con captura de stdout/stderr"
+    },
+    {
+      "id": 36,
+      "name": "octave_mex_compile",
+      "category": "Integración y herramientas externas",
+      "description": "Compilar archivos MEX (C/C++/Fortran) para extender Octave"
+    },
+    {
+      "id": 37,
+      "name": "octave_convert_matlab",
+      "category": "Herramientas avanzadas / especializadas",
+      "description": "Convertir código MATLAB a Octave (o viceversa) detectando incompatibilidades"
+    },
+    {
+      "id": 38,
+      "name": "octave_explain_code",
+      "category": "Herramientas avanzadas / especializadas",
+      "description": "Analizar un fragmento de código Octave y devolver una explicación paso a paso"
+    },
+    {
+      "id": 39,
+      "name": "octave_generate_code",
+      "category": "Herramientas avanzadas / especializadas",
+      "description": "Dada una descripción en lenguaje natural, generar código Octave listo para ejecutar"
+    },
+    {
+      "id": 40,
+      "name": "octave_benchmark",
+      "category": "Herramientas avanzadas / especializadas",
+      "description": "Ejecutar micro-benchmarks para comparar el rendimiento de diferentes implementaciones"
+    },
+    {
+      "id": 41,
+      "name": "octave_validate",
+      "category": "Validación",
+      "description": "Validar código Octave completo: sintaxis, semántica y errores potenciales sin ejecutarlo"
+    },
+    {
+      "id": 42,
+      "name": "validate_tools_json",
+      "category": "Validación",
+      "description": "Validar estructura del archivo de tools MCP: IDs únicos, campos requeridos, categorías consistentes"
+    },
+    {
+      "id": 43,
+      "name": "validate_mcp_config",
+      "category": "Validación",
+      "description": "Validar configuración MCP contra el protocolo Model Context Protocol: esquema, versiones, campos requeridos"
+    },
+    {
+      "id": 44,
+      "name": "octave_interp1d",
+      "category": "Matemáticas: interpolación",
+      "description": "Interpolación 1D con métodos linear, nearest, pchip, cubic y spline (interp1)"
+    },
+    {
+      "id": 45,
+      "name": "octave_interp_nd",
+      "category": "Matemáticas: interpolación",
+      "description": "Interpolación multidimensional y datos dispersos: interp2, interp3, griddata"
+    },
+    {
+      "id": 46,
+      "name": "octave_poly_arith",
+      "category": "Matemáticas: interpolación",
+      "description": "Aritmética de polinomios: derivada, integral, composición y evaluación (polyder, polyint, polyval)"
+    },
+    {
+      "id": 47,
+      "name": "octave_fzero",
+      "category": "Matemáticas: ecuaciones no lineales",
+      "description": "Raíz de ecuación escalar por bisección-secante con tolerancia y bracketing (fzero)"
+    },
+    {
+      "id": 48,
+      "name": "octave_fsolve",
+      "category": "Matemáticas: ecuaciones no lineales",
+      "description": "Resolver sistema de ecuaciones no lineales por Newton/Powell (requiere optim)"
+    },
+    {
+      "id": 49,
+      "name": "octave_special_funcs",
+      "category": "Matemáticas: funciones especiales",
+      "description": "Funciones especiales: Bessel J/I, gamma, incompletas, Airy, elíptica de Jacobi, erf"
+    },
+    {
+      "id": 50,
+      "name": "octave_legendre",
+      "category": "Matemáticas: funciones especiales",
+      "description": "Polinomios ortogonales de Legendre y su ortogonalidad numérica"
+    },
+    {
+      "id": 51,
+      "name": "octave_condition_number",
+      "category": "Matemáticas: álgebra lineal",
+      "description": "Número de condición, recíproco y estimación de norma para diagnóstico de condicionamiento"
+    },
+    {
+      "id": 52,
+      "name": "octave_balance",
+      "category": "Matemáticas: álgebra lineal",
+      "description": "Balanceo de matriz para reducir la norma de una matriz y estabilizar autovalores"
+    },
+    {
+      "id": 53,
+      "name": "octave_lu_qr_chol",
+      "category": "Matemáticas: álgebra lineal",
+      "description": "Factorizaciones LU con pivoteo, QR (Householder) y Cholesky con residual verificable"
+    },
+    {
+      "id": 54,
+      "name": "octave_schur_hess",
+      "category": "Matemáticas: álgebra lineal",
+      "description": "Descomposiciones de Schur (triangular) y Hessenberg para análisis espectral"
+    },
+    {
+      "id": 55,
+      "name": "octave_iterative_solvers",
+      "category": "Matemáticas: álgebra lineal",
+      "description": "Solvers iterativos para sistemas dispersos: gradiente conjugado y GMRES"
+    },
+    {
+      "id": 56,
+      "name": "octave_sparse_ops",
+      "category": "Matemáticas: álgebra lineal",
+      "description": "Operaciones con matrices dispersas: construcción, precondicionamiento incompleto Cholesky"
+    },
+    {
+      "id": 57,
+      "name": "octave_matrix_funcs",
+      "category": "Matemáticas: álgebra lineal",
+      "description": "Funciones de matriz: exponencial, raíz cuadrada y descomposición QZ"
+    },
+    {
+      "id": 58,
+      "name": "octave_quadgk",
+      "category": "Matemáticas: cuadratura",
+      "description": "Cuadratura adaptativa de alta precisión para integrales definidas con singularidades"
+    },
+    {
+      "id": 59,
+      "name": "octave_cubature_nd",
+      "category": "Matemáticas: cuadratura",
+      "description": "Cuadratura multidimensional: integrales dobles y triples (dblquad, integral3)"
+    },
+    {
+      "id": 60,
+      "name": "octave_hilbert",
+      "category": "Matemáticas: transformadas",
+      "description": "Transformada de Hilbert para señal analítica y envolvente de amplitud"
+    },
+    {
+      "id": 61,
+      "name": "octave_savgol",
+      "category": "Matemáticas: transformadas",
+      "description": "Filtro Savitzky-Golay para suavizado conservando picos y derivadas"
+    },
+    {
+      "id": 62,
+      "name": "octave_resample_decimate",
+      "category": "Matemáticas: transformadas",
+      "description": "Cambio de tasa de muestreo: resample polifásico y decimate con anti-aliasing"
+    },
+    {
+      "id": 63,
+      "name": "octave_higher_moments",
+      "category": "Matemáticas: estadística avanzada",
+      "description": "Momentos superiores: moda, curtosis y asimetría para diagnóstico de distribución"
+    },
+    {
+      "id": 64,
+      "name": "octave_nonparametric_tests",
+      "category": "Matemáticas: estadística avanzada",
+      "description": "Pruebas no paramétricas: t-test y Mann-Whitney U sin supuestos de normalidad"
+    },
+    {
+      "id": 65,
+      "name": "octave_kmeans_pca",
+      "category": "Matemáticas: estadística avanzada",
+      "description": "Agrupamiento k-means y análisis de componentes principales (kmeans, pca)"
+    },
+    {
+      "id": 66,
+      "name": "octave_lqr",
+      "category": "Control",
+      "description": "Control óptimo LQR y DLQR: ganancia por mínimos cuadrados y costo cuadrático"
+    },
+    {
+      "id": 67,
+      "name": "octave_kalman_filter",
+      "category": "Control",
+      "description": "Filtro de Kalman y LQG: estimación de estados con ruido de proceso y medida (dlqe)"
+    },
+    {
+      "id": 68,
+      "name": "octave_pole_placement",
+      "category": "Control",
+      "description": "Ubicación de polos: asignación de autovalores por realimentación de estado (place, acker)"
+    },
+    {
+      "id": 69,
+      "name": "octave_stability_analysis",
+      "category": "Control",
+      "description": "Análisis de estabilidad: autovalores, amortiguamiento y ecuación de Lyapunov"
+    },
+    {
+      "id": 70,
+      "name": "octave_robustness",
+      "category": "Control",
+      "description": "Márgenes de robustez: ganancia y fase, ancho de banda, pico de resonancia"
+    },
+    {
+      "id": 71,
+      "name": "octave_freq_response",
+      "category": "Control",
+      "description": "Respuesta en frecuencia y transitoria: Bode, Nyquist, step e impulse"
+    },
+    {
+      "id": 72,
+      "name": "finish",
+      "category": "Orden y finalización",
+      "description": "Marcador de finalización de herramientas MCP Octave - reordena y cierra el catálogo de herramientas"
+    }
   ],
   "designPrinciples": [
     "Granularidad adecuada: tools atómicas y componibles",

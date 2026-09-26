@@ -1,0 +1,87 @@
+Revisando el repositorio `bemoregt/Octave_MCP_ClaudeCode` (que parece ser al que te refieres, aunque el enlace que compartiste apunta a otro autor), el servidor MCP actual expone una herramienta principal: `run_octave`, que permite ejecutar código Octave y devolver resultados de texto e imágenes generadas. Hay otro MCP de Octave en `elevanaltd/octave-mcp` que se enfoca en validación y escritura de documentos OCTAVE, con herramientas como `octave_validate`, `octave_write`, `octave_eject` y `octave_compile_grammar`.
+
+Partiendo de esa base, aquí tienes una propuesta de **subtools o herramientas adicionales** que podrías agregar, agrupadas por categoría y con una breve justificación.
+
+---
+
+## 🔧 Ejecución y evaluación de código
+
+- **`run_octave_script`**: Ejecutar un archivo `.m` existente en lugar de solo código inline. Útil para flujos de trabajo con scripts ya guardados.
+- **`eval_octave_expression`**: Evaluar una expresión Octave sin necesidad de un script completo, devolviendo el resultado como texto estructurado (número, matriz, celda).
+- **`run_octave_with_input`**: Ejecutar código Octave que requiere entrada del usuario (por ejemplo, `input()`), pasando los valores de entrada como parámetros desde el MCP.
+
+---
+
+## 📂 Gestión de archivos y datos
+
+- **`octave_read_file` / `octave_write_file`**: Leer y escribir archivos `.m`, `.mat`, `.csv`, `.txt` desde y hacia el sistema de archivos local, con control de rutas seguras.
+- **`octave_load_data`**: Cargar datos desde formatos comunes (CSV, MAT, HDF5, Parquet) y devolverlos como estructuras JSON o tablas.
+- **`octave_export_data`**: Exportar variables o resultados a CSV, MAT, JSON o Parquet.
+- **`list_octave_files`**: Listar archivos `.m` en un directorio o workspace, con filtros por nombre o fecha.
+
+---
+
+## 📊 Visualización y gráficos
+
+- **`generate_plot`**: Crear gráficos (líneas, barras, dispersión, heatmaps) a partir de datos JSON y devolver la imagen en base64 o guardarla como PNG.
+- **`plot_from_file`**: Generar gráficos directamente desde un archivo de datos (CSV, MAT) sin necesidad de escribir código Octave.
+- **`export_figure`**: Exportar la figura actual a formatos como PNG, SVG, PDF o EPS con opciones de resolución y tamaño.
+
+---
+
+## 📦 Gestión de paquetes y entorno
+
+- **`octave_pkg_install` / `octave_pkg_load`**: Instalar y cargar paquetes de Octave-Forge (`pkg install`, `pkg load`).
+- **`octave_pkg_list`**: Listar paquetes instalados y sus versiones.
+- **`octave_pkg_update`**: Actualizar paquetes instalados a las últimas versiones.
+- **`octave_which`**: Localizar la ruta de una función o archivo en el path de Octave.
+
+---
+
+## 🧮 Cálculo numérico y científico
+
+- **`octave_solve_linear_system`**: Resolver sistemas de ecuaciones lineales (`A\b`) devolviendo la solución y posible información de condicionamiento.
+- **`octave_optimize`**: Ejecutar rutinas de optimización (fminunc, fmincon, linprog) con parámetros configurables.
+- **`octave_fft` / `octave_ifft`**: Realizar transformadas de Fourier y devolver espectros o datos reconstruidos.
+- **`octave_statistics`**: Calcular estadísticas descriptivas (media, mediana, desviación, correlación) sobre matrices o archivos de datos.
+
+---
+
+## 🐞 Depuración y perfilado
+
+- **`octave_debug`**: Ejecutar código en modo debug, permitiendo establecer puntos de interrupción y examinar variables.
+- **`octave_profile`**: Perfilar la ejecución de código para identificar cuellos de botella.
+- **`octave_check_syntax`**: Validar la sintaxis de un script `.m` sin ejecutarlo, devolviendo errores y advertencias.
+
+---
+
+## 🔗 Integración y herramientas externas
+
+- **`octave_call_python`**: Ejecutar código Python desde Octave (usando `system` o `pycall`) y devolver resultados.
+- **`octave_call_shell`**: Ejecutar comandos de shell desde Octave, con captura de stdout/stderr.
+- **`octave_mex_compile`**: Compilar archivos MEX (C/C++/Fortran) para extender Octave.
+
+---
+
+## 🧠 Herramientas avanzadas / especializadas
+
+- **`octave_generate_code`**: Dada una descripción en lenguaje natural, generar código Octave listo para ejecutar (útil como preprocesador para `run_octave`).
+- **`octave_explain_code`**: Analizar un fragmento de código Octave y devolver una explicación paso a paso.
+- **`octave_convert_matlab`**: Convertir código MATLAB a Octave (o viceversa) detectando incompatibilidades.
+- **`octave_benchmark`**: Ejecutar micro-benchmarks para comparar el rendimiento de diferentes implementaciones.
+
+---
+
+## 📐 Principios de diseño para las nuevas tools
+
+Al agregar estas herramientas, conviene seguir buenas prácticas de diseño de MCP:
+
+- **Granularidad adecuada**: Evita tools que hagan demasiado; prefiere herramientas atómicas y componibles.
+- **Nombres claros y consistentes**: Usa verbos específicos (`run_`, `read_`, `generate_`, `solve_`) y recursos explícitos.
+- **Descripciones detalladas**: Cada tool debe tener una descripción clara para que el agente sepa cuándo usarla.
+- **Seguridad**: Limita el acceso al sistema de archivos y a comandos de shell a rutas o listas blancas.
+- **Descubrimiento dinámico**: Si el conjunto de tools puede cambiar, implementa `listChanged` para que los clientes se actualicen.
+
+---
+
+En resumen, el MCP de Octave puede evolucionar desde un simple ejecutor de código hacia una **plataforma completa de asistencia científica**, cubriendo desde la gestión de datos y paquetes hasta la visualización y la depuración. La clave está en mantener un equilibrio entre potencia y seguridad, y en documentar cada tool para que el agente pueda seleccionarla correctamente.
