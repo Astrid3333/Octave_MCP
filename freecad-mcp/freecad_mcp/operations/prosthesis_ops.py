@@ -80,50 +80,38 @@ try:
     o.ViewObject.ShapeColor = (0.35, 0.35, 0.38)
 
     # --- mano pasiva estatica (ISO 7250-1 P50: 196 x 88 x ~30 mm) --------
-    # palma/metacarpos z132..240 (longitud de palma 108); MCP en z132
-    palm = Part.makeBox(88 * K, 30 * K, 108 * K, Vector(-44 * K, -15 * K, 132 * K))
-    try:
-        eds = [e for e in palm.Edges
-               if len(e.Vertexes) == 2
-               and abs(e.Vertexes[0].Point.z - e.Vertexes[1].Point.z) > 1e-6]
-        if eds:
-            p2 = palm.makeFillet(10 * K, eds)
-            if p2.isValid():
-                palm = p2
-        top = [e for e in palm.Edges
-               if len(e.Vertexes) == 2
-               and all(abs(v.Point.z - 240 * K) < 1e-3 for v in e.Vertexes)]
-        if top:
-            p3 = palm.makeFillet(5 * K, top)
-            if p3.isValid():
-                palm = p3
-    except Exception:
-        pass
-    hand = palm
-    # dedos desde MCP (z132): anchos/longitudes antropometricas P50
-    # (indice 82, mayor 88, anular 78, menique 63); punta esferica
-    for (cx, w, tip) in ((33.5, 21.0, 50.0), (9.5, 21.0, 44.0),
-                         (-13.5, 19.0, 54.0), (-35.0, 18.0, 69.0)):
-        f = Part.makeBox(w * K, 22 * K, (132 - tip) * K,
-                         Vector((cx - w / 2) * K, -11 * K, tip * K))
+    # forma cosmética redondeada: palma "almohadilla" y dedos tipo capsula
+    def _round_all(shape, r):
         try:
-            cap = Part.makeSphere(w / 2.0 * K,
-                                  Vector(cx * K, 0, (tip + w / 2.0) * K))
-            f = f.fuse(cap)
+            out = shape.makeFillet(r, shape.Edges)
+            if out.isValid() and out.Volume <= shape.Volume + 1.0:
+                return out
         except Exception:
             pass
+        return shape
+
+    # palma/metacarpos z132..240 (longitud de palma 108); MCP en z132
+    palm = _round_all(
+        Part.makeBox(88 * K, 30 * K, 108 * K, Vector(-44 * K, -15 * K, 132 * K)),
+        9 * K)
+    hand = palm
+    # dedos desde MCP (z132): capsulas (cilindro+esfera) con anchos y
+    # longitudes antropometricas P50 (indice 82, mayor 88, anular 78,
+    # menique 63); punta exacta en z=tip
+    for (cx, w, tip) in ((33.5, 21.0, 50.0), (9.5, 21.0, 44.0),
+                         (-13.5, 19.0, 54.0), (-35.0, 18.0, 69.0)):
+        r = w / 2.0
+        h = (145 - tip) - r
+        f = Part.makeCylinder(r * K, h * K, Vector(cx * K, 0, (tip + r) * K))
+        f = f.fuse(Part.makeSphere(r * K, Vector(cx * K, 0, (tip + r) * K)))
         hand = hand.fuse(f)
-    # pulgar (longitud 65 mm, ~30 grados abajo-afuera): construido a la
-    # derecha y reflejado si side=left (simetria exacta)
-    thumb = Part.makeBox(18 * K, 16 * K, 65 * K, Vector(0, -8 * K, 0))
+    # pulgar (longitud 65 mm, ~30 grados abajo-afuera): capsula construida
+    # a la derecha y reflejada si side=left (simetria exacta)
+    thumb = Part.makeCylinder(9 * K, 56 * K, Vector(0, 0, 0))
+    thumb = thumb.fuse(Part.makeSphere(9 * K, Vector(0, 0, 56 * K)))
     thumb.Placement = FreeCAD.Placement(
         FreeCAD.Vector(0, 0, 0), FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), 150.0))
     thumb.translate(FreeCAD.Vector(30 * K, 0, 205 * K))
-    try:
-        thumb = thumb.fuse(
-            Part.makeSphere(9 * K, Vector(62.5 * K, 0, 148.7 * K)))
-    except Exception:
-        pass
     if not RIGHT:
         thumb = thumb.mirror(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(1, 0, 0))
     hand = hand.fuse(thumb)
