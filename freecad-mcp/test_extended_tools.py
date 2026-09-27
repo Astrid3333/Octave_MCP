@@ -22,6 +22,8 @@ from freecad_mcp.operations import (  # noqa: E402
     export_model_operation,
     fit_view_operation,
     get_camera_operation,
+    get_example_operation,
+    list_examples_operation,
     measure_operation,
     open_document_operation,
     save_document_operation,
@@ -233,6 +235,19 @@ def main() -> int:
     # limpieza: cerrar doc de prueba
     if opened:
         close_document_operation(conn, opened)
+
+    # --- registro de ejemplos (local, sin RPC) ----------------------------
+    resp = list_examples_operation()
+    lx = payload(resp)
+    ids = [e.get("id") for e in lx.get("examples", [])]
+    record("list_examples", lx.get("success") is True and lx.get("count", 0) >= 1,
+           f"count={lx.get('count')} ids={ids}")
+
+    resp = get_example_operation("protesis-deportiva")
+    gx = payload(resp)
+    record("get_example", gx.get("success") is True and gx.get("file_exists") is True
+           and gx.get("metrics", {}).get("total_volume_mm3", 0) > 0,
+           f"file={gx.get('file_exists')} previews={gx.get('previews_exist')}")
 
     elapsed = time.time() - t0
     fails = [r for r in RESULTS if not r[1]]

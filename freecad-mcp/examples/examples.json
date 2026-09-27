@@ -1,0 +1,51 @@
+{
+  "schema": "freecad-mcp-examples/1",
+  "examples": [
+    {
+      "id": "protesis-deportiva",
+      "name": "Protesis deportiva transtibial (J-blade)",
+      "description": "Protesis de carrera estilo blade de carbono aprobada en 5 rondas iterativas: socket anatomico con brim inclinado por caja rotada, pala J de loft superelipse con remate ease (sin cola de escorpion), pylon de titanio, adaptador con chaflanes de 2 mm y esquinas con fillet 4.5, tornillos hex con arandelas, anillo de montaje con pernos radiales chaflanados y arandelas, y bulones en cruz del montaje.",
+      "units": "mm",
+      "created": "2026-09-27",
+      "approved": true,
+      "approval_rounds": 5,
+      "file": "protesis_deportiva.FCStd",
+      "previews": ["montaje_lado.png", "montaje_34.png", "protesis_iso.png"],
+      "objects": [
+        "Socket",
+        "Pylon_Titanio",
+        "Anillo_Monta",
+        "Adaptador",
+        "Tornillos",
+        "Arandelas",
+        "Bulones",
+        "Blade_Carbon"
+      ],
+      "components": {
+        "socket": {"tipo": "resina termica anatomico", "corte_brim_deg": 18.43, "pared_mm": 4.0},
+        "pylon": {"material": "titanio", "cono_r1_mm": 14.5, "cono_r2_mm": 11.0, "largo_mm": 114.0},
+        "adaptador": {"material": "aluminio anodizado", "caja_mm": [64, 40, 26], "chamfer_mm": 2.0, "fillet_mm": 4.5},
+        "anillo": {"material": "acero", "collar_r_mm": 17.0, "pernos": 4, "perno_r_mm": 3.2, "perno_largo_mm": 9.0},
+        "tornillos": {"cabeza": "hexagonal", "cantidad": 4, "cruz_r_mm": 17.0},
+        "arandelas": {"cantidad": 8},
+        "bulones": {"tipo": "travesano cruzado", "r_mm": 3.0},
+        "pala": {"material": "carbono", "curva": "J con ease de remate", "superelipse_ex": 5.0, "secciones": 30}
+      },
+      "metrics": {
+        "total_volume_mm3": 520550.2,
+        "scene_bbox_mm": [-42.2, 171.4, -55.4, 58.7, 2.5, 560.7],
+        "height_mm": 558.2,
+        "objects": [
+          {"name": "Adaptador", "volume_mm3": 65352.8, "bbox": [-24.0, 40.0, -20.0, 20.0, 166.0, 192.0]},
+          {"name": "Pylon_Titanio", "volume_mm3": 58586.0, "bbox": [-10.5, 18.5, -14.5, 14.5, 192.0, 306.0]},
+          {"name": "Anillo_Monta", "volume_mm3": 13544.2, "bbox": [-19.5, 27.5, -23.5, 23.5, 292.0, 306.0]},
+          {"name": "Blade_Carbon", "volume_mm3": 80035.8, "bbox": [-17.9, 171.4, -6.5, 6.5, 2.5, 172.9]},
+          {"name": "Socket", "volume_mm3": 298471.5, "bbox": [-42.2, 52.1, -55.4, 58.7, 297.0, 560.7]},
+          {"name": "Tornillos", "volume_mm3": 382.8, "bbox": [-11.7, 19.7, -16.3, 16.3, 191.5, 194.6]},
+          {"name": "Bulones", "volume_mm3": 3135.8, "bbox": [-27.0, 43.0, -23.0, 23.0, 176.0, 182.0]},
+          {"name": "Arandelas", "volume_mm3": 1041.2, "bbox": [-14.5, 22.4, -18.4, 18.4, 192.0, 304.6]}
+        ]
+      }
+    }
+  ]
+}

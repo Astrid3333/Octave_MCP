@@ -1,7 +1,7 @@
 {
   "mcpName": "FreeCAD_MCP",
-  "version": "1.0.0",
-  "description": "FreeCAD MCP (fork local con 26 tools): 11 upstream de creacion y captura + 15 nuevas de documentos, camara, modelado, medicion y exportacion",
+  "version": "1.1.0",
+  "description": "FreeCAD MCP (fork local con 28 tools): 11 upstream de creacion y captura + 17 nuevas de documentos, camara, modelado, medicion, exportacion y registro de ejemplos",
   "tools": [
     {
       "id": 1,
@@ -158,6 +158,18 @@
       "name": "export_model",
       "category": "Exportacion",
       "description": "Exportar objetos a STEP, IGES, STL, OBJ, PLY, OFF, AMF, 3MF, BREP o FCStd eligiendo el formato por la extension; devuelve ruta y bytes"
+    },
+    {
+      "id": 27,
+      "name": "list_examples",
+      "category": "Ejemplos",
+      "description": "Listar los ejemplos de diseno registrados en el MCP (resumen: id, nombre, descripcion, unidades, objetos, previews, aprobado)"
+    },
+    {
+      "id": 28,
+      "name": "get_example",
+      "category": "Ejemplos",
+      "description": "Obtener un ejemplo completo con componentes, metricas y rutas absolutas al archivo FCStd y a las imagenes de vista previa"
     }
   ],
   "designPrinciples": [
@@ -167,6 +179,7 @@
     "Respuestas JSON consistentes: toda operacion emite success, datos utiles y error legible en un unico objeto",
     "Los snippets corren en el hilo GUI de FreeCAD con TIMEOUT limitado: operaciones largas se evitan y los fallos se reportan sin dejar la cola colgada",
     "Upstream intacto: las 11 tools originales conservan su comportamiento y firmas; las nuevas solo se agregan, nunca se redefinen",
-    "Toda tool nueva se valida con tests E2E contra FreeCAD real antes de publicarse"
+    "Toda tool nueva se valida con tests E2E contra FreeCAD real antes de publicarse",
+    "Los disenos aprobados se guardan como ejemplos en examples/examples.json y se sirven con list_examples/get_example, sin logica duplicada"
   ]
 }

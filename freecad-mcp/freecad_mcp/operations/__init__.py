@@ -11,6 +11,10 @@ from .core import (
     insert_part_from_library_operation,
     list_documents_operation,
 )
+from .examples_ops import (
+    get_example_operation,
+    list_examples_operation,
+)
 from .extended import (
     apply_chamfer_operation,
     apply_fillet_operation,
@@ -41,6 +45,8 @@ __all__ = [
     "get_view_operation",
     "insert_part_from_library_operation",
     "list_documents_operation",
+    "get_example_operation",
+    "list_examples_operation",
     "apply_chamfer_operation",
     "apply_fillet_operation",
     "boolean_op_operation",

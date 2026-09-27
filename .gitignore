@@ -1,5 +1,6 @@
 .openscience/
 *.png
+!freecad-mcp/examples/*.png
 *.FCBak
 freecad-mcp/_test_out/
 __pycache__/

@@ -1,33 +1,44 @@
 # FreeCAD MCP (fork local)
 
 Fork local de [`freecad-mcp`](https://github.com/neka-nat/freecad-mcp) (MIT,
-"Copyright (c) 2025 Shirokuma (k tanaka)") con **26 tools**: las 11 upstream de
-creación/consulta/captura más **15 nuevas** de documentos, cámara, modelado,
-medición y exportación.
+"Copyright (c) 2025 Shirokuma (k tanaka)") con **28 tools**: las 11 upstream de
+creación/consulta/captura más **17 nuevas** de documentos, cámara, modelado,
+medición, exportación y registro de ejemplos.
 
 ## Componentes
 
 | Pieza | Rol |
 |---|---|
 | `run_server.py` | Punto de entrada MCP (stdio) para opencode |
-| `freecad_mcp/server.py` | Servidor FastMCP: expone las 26 tools |
+| `freecad_mcp/server.py` | Servidor FastMCP: expone las 28 tools |
 | `freecad_mcp/freecad_client.py` | Cliente XML-RPC al addon FreeCADMCP (`localhost:9875`) + snippets de cámara/captura |
 | `freecad_mcp/operations/core.py` | 11 operaciones upstream (con capturas modificadas) |
 | `freecad_mcp/operations/extended.py` | 15 operaciones nuevas |
-| `test_extended_tools.py` | Tests E2E (22 aserciones) contra FreeCAD real |
+| `freecad_mcp/operations/examples_ops.py` | 2 operaciones del registro de ejemplos (local, sin RPC) |
+| `examples/` | Diseños aprobados: `examples.json` (manifest) + FCStd + previews |
+| `test_extended_tools.py` | Tests E2E (24 aserciones) contra FreeCAD real |
 
 Requisito: FreeCAD (flatpak) con el addon **FreeCADMCP** activo
 (`auto_start_rpc: true`, XML-RPC en `127.0.0.1:9875`).
 
-## Tools nuevas (15)
+## Tools nuevas (17)
 
 `save_document`, `open_document`, `close_document`, `export_model`,
 `get_camera`, `set_camera`, `fit_view`, `screenshot_current`, `set_color`,
 `apply_fillet`, `apply_chamfer`, `boolean_op`, `measure`, `transform_object`,
-`set_visibility`.
+`set_visibility`, `list_examples`, `get_example`.
 
 Catálogo completo en `../freecad_mcp_tools.json` (validador:
 `../validate_freecad_mcp.py`).
+
+## Registro de ejemplos
+
+`examples/examples.json` guarda los diseños aprobados como ejemplos
+reutilizables (metadatos, componentes, métricas, rutas al FCStd y a las
+previews). Se sirven con `list_examples` (resumen) y `get_example(id)`
+(ficha completa con rutas absolutas). Ejemplo incluido:
+`protesis-deportiva` (prótesis deportiva transtibial J-blade, aprobada en
+5 rondas).
 
 ## Modificaciones respecto al upstream
 

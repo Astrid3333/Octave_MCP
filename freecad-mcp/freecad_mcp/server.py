@@ -19,12 +19,14 @@ from .operations import (
     export_model_operation,
     fit_view_operation,
     get_camera_operation,
+    get_example_operation,
     get_object_operation,
     get_objects_operation,
     get_parts_list_operation,
     get_view_operation,
     insert_part_from_library_operation,
     list_documents_operation,
+    list_examples_operation,
     measure_operation,
     open_document_operation,
     save_document_operation,
@@ -744,6 +746,32 @@ def set_visibility(
         Confirmation listing the updated objects.
     """
     return set_visibility_operation(get_freecad_connection(), doc_name, objects, visible)
+
+
+@mcp.tool()
+def list_examples(ctx: Context) -> list[TextContent]:
+    """List saved design examples registered in the MCP examples registry.
+
+    Returns:
+        JSON with the count, the registry path and a summary of each
+        example (id, name, description, units, objects, previews, approved).
+    """
+    return list_examples_operation()
+
+
+@mcp.tool()
+def get_example(ctx: Context, example_id: str) -> list[TextContent]:
+    """Get a full design example from the registry: metadata, components,
+    metrics and absolute paths to its FCStd file and preview images.
+
+    Args:
+        example_id: Example id (e.g. 'protesis-deportiva') or exact name.
+
+    Returns:
+        JSON with the complete example entry; file_exists/previews_exist
+        report whether the files are present on disk.
+    """
+    return get_example_operation(example_id)
 
 
 @mcp.prompt()
