@@ -80,30 +80,50 @@ try:
     o.Shape = pin
     o.ViewObject.ShapeColor = (0.4, 0.4, 0.42)
 
-    # --- mano estática (palma + 4 dedos + pulgar) ------------------------
-    palm = Part.makeBox(44 * K, 18 * K, 44 * K, Vector(-22 * K, -9 * K, 72 * K))
-    palm = _fillet_vert(palm, 3 * K)
+    # --- mano estática (palma + 4 dedos escalonados + pulgar) ------------
+    palm = Part.makeBox(44 * K, 18 * K, 46 * K, Vector(-22 * K, -9 * K, 70 * K))
+    try:
+        eds = [e for e in palm.Edges
+               if len(e.Vertexes) == 2
+               and abs(e.Vertexes[0].Point.z - e.Vertexes[1].Point.z) > 1e-6]
+        if eds:
+            p2 = palm.makeFillet(5 * K, eds)
+            if p2.isValid():
+                palm = p2
+        top = [e for e in palm.Edges
+               if len(e.Vertexes) == 2
+               and all(abs(v.Point.z - 116 * K) < 1e-3 for v in e.Vertexes)]
+        if top:
+            p3 = palm.makeFillet(4 * K, top)
+            if p3.isValid():
+                palm = p3
+    except Exception:
+        pass
     hand = palm
-    for cx in (-16.5, -5.5, 5.5, 16.5):
-        f = Part.makeBox(10 * K, 16 * K, 46 * K,
-                         Vector((cx - 5) * K, -8 * K, 26 * K))
+    # dedos escalonados con punta esferica (indice en +x, pulgar del lado +x)
+    for (cx, w, tip) in ((16.0, 11.0, 22.0), (5.0, 11.0, 18.0),
+                         (-6.5, 10.0, 24.0), (-17.0, 9.0, 32.0)):
+        f = Part.makeBox(w * K, 16 * K, (70 - tip) * K,
+                         Vector((cx - w / 2) * K, -8 * K, tip * K))
         try:
-            eds = [e for e in f.Edges
-                   if len(e.Vertexes) == 2
-                   and abs(e.Vertexes[0].Point.z - e.Vertexes[1].Point.z) < 1e-6
-                   and abs(e.Vertexes[0].Point.z - 26 * K) < 1e-6]
-            if eds:
-                f2 = f.makeFillet(2 * K, eds)
-                if f2.isValid():
-                    f = f2
+            cap = Part.makeSphere(w / 2.0 * K, Vector(cx * K, 0, tip * K))
+            f = f.fuse(cap)
         except Exception:
             pass
         hand = hand.fuse(f)
-    thumb = Part.makeBox(10 * K, 14 * K, 26 * K, Vector(0, -7 * K, 0))
-    ang = -20.0 if RIGHT else 20.0
+    # pulgar oponible: se construye a la derecha (45° abajo-afuera) y se
+    # refleja si side=left para garantizar simetría exacta
+    thumb = Part.makeBox(12 * K, 15 * K, 34 * K, Vector(0, -7.5 * K, 0))
     thumb.Placement = FreeCAD.Placement(
-        FreeCAD.Vector(0, 0, 0), FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), ang))
-    thumb.translate(FreeCAD.Vector(22 * K if RIGHT else -32 * K, 0, 58 * K))
+        FreeCAD.Vector(0, 0, 0), FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), 135.0))
+    thumb.translate(FreeCAD.Vector(18 * K, 0, 90 * K))
+    try:
+        thumb = thumb.fuse(
+            Part.makeSphere(6 * K, Vector(37.8 * K, 0, 61.7 * K)))
+    except Exception:
+        pass
+    if not RIGHT:
+        thumb = thumb.mirror(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(1, 0, 0))
     hand = hand.fuse(thumb)
     try:
         hand = hand.removeSplitter()
