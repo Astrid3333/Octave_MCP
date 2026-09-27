@@ -1,7 +1,7 @@
 {
   "mcpName": "FreeCAD_MCP",
-  "version": "1.1.0",
-  "description": "FreeCAD MCP (fork local con 28 tools): 11 upstream de creacion y captura + 17 nuevas de documentos, camara, modelado, medicion, exportacion y registro de ejemplos",
+  "version": "1.2.0",
+  "description": "FreeCAD MCP (fork local con 30 tools): 11 upstream de creacion y captura + 19 nuevas de documentos, camara, modelado, medicion, exportacion, ejemplos y espejo",
   "tools": [
     {
       "id": 1,
@@ -170,6 +170,18 @@
       "name": "get_example",
       "category": "Ejemplos",
       "description": "Obtener un ejemplo completo con componentes, metricas y rutas absolutas al archivo FCStd y a las imagenes de vista previa"
+    },
+    {
+      "id": 29,
+      "name": "load_example",
+      "category": "Ejemplos",
+      "description": "Abrir en FreeCAD el FCStd de un ejemplo registrado y devolver el documento cargado con su id y ruta"
+    },
+    {
+      "id": 30,
+      "name": "mirror_object",
+      "category": "Operaciones geometricas",
+      "description": "Reflejar la forma de un objeto sobre un plano (XY, XZ o YZ con desplazamiento opcional) creando un nuevo objeto"
     }
   ],
   "designPrinciples": [

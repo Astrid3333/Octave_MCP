@@ -27,7 +27,9 @@ from .operations import (
     insert_part_from_library_operation,
     list_documents_operation,
     list_examples_operation,
+    load_example_operation,
     measure_operation,
+    mirror_object_operation,
     open_document_operation,
     save_document_operation,
     screenshot_current_operation,
@@ -772,6 +774,44 @@ def get_example(ctx: Context, example_id: str) -> list[TextContent]:
         report whether the files are present on disk.
     """
     return get_example_operation(example_id)
+
+
+@mcp.tool()
+def load_example(ctx: Context, example_id: str) -> list[TextContent]:
+    """Open the FCStd file of a registered design example in FreeCAD.
+
+    Args:
+        example_id: Example id (e.g. 'protesis-deportiva') or exact name.
+
+    Returns:
+        Confirmation with the opened document plus example_id and the
+        absolute file path that was loaded.
+    """
+    return load_example_operation(get_freecad_connection(), example_id)
+
+
+@mcp.tool()
+def mirror_object(
+    ctx: Context,
+    doc_name: str,
+    obj_name: str,
+    plane: Literal["XY", "XZ", "YZ"],
+    offset: float = 0.0,
+) -> list[TextContent]:
+    """Mirror an object's shape across a plane, creating a new object.
+
+    Args:
+        doc_name: Document name.
+        obj_name: Object to mirror.
+        plane: Mirror plane: 'XY' (z=offset), 'XZ' (y=offset) or
+            'YZ' (x=offset).
+        offset: Distance of the plane from the origin along its normal
+            (mm, default 0).
+
+    Returns:
+        Confirmation with the new object name, validity, volume and bbox.
+    """
+    return mirror_object_operation(get_freecad_connection(), doc_name, obj_name, plane, offset)
 
 
 @mcp.prompt()

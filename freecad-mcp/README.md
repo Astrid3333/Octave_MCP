@@ -1,44 +1,45 @@
 # FreeCAD MCP (fork local)
 
 Fork local de [`freecad-mcp`](https://github.com/neka-nat/freecad-mcp) (MIT,
-"Copyright (c) 2025 Shirokuma (k tanaka)") con **28 tools**: las 11 upstream de
-creación/consulta/captura más **17 nuevas** de documentos, cámara, modelado,
-medición, exportación y registro de ejemplos.
+"Copyright (c) 2025 Shirokuma (k tanaka)") con **30 tools**: las 11 upstream de
+creación/consulta/captura más **19 nuevas** de documentos, cámara, modelado,
+medición, exportación, espejo y registro de ejemplos.
 
 ## Componentes
 
 | Pieza | Rol |
 |---|---|
 | `run_server.py` | Punto de entrada MCP (stdio) para opencode |
-| `freecad_mcp/server.py` | Servidor FastMCP: expone las 28 tools |
+| `freecad_mcp/server.py` | Servidor FastMCP: expone las 30 tools |
 | `freecad_mcp/freecad_client.py` | Cliente XML-RPC al addon FreeCADMCP (`localhost:9875`) + snippets de cámara/captura |
 | `freecad_mcp/operations/core.py` | 11 operaciones upstream (con capturas modificadas) |
-| `freecad_mcp/operations/extended.py` | 15 operaciones nuevas |
-| `freecad_mcp/operations/examples_ops.py` | 2 operaciones del registro de ejemplos (local, sin RPC) |
-| `examples/` | Diseños aprobados: `examples.json` (manifest) + FCStd + previews |
-| `test_extended_tools.py` | Tests E2E (24 aserciones) contra FreeCAD real |
+| `freecad_mcp/operations/extended.py` | 16 operaciones nuevas (incluye `mirror_object`) |
+| `freecad_mcp/operations/examples_ops.py` | 3 operaciones del registro de ejemplos (local; `load_example` abre el FCStd vía RPC) |
+| `examples/` | Diseños registrados: `examples.json` (manifest) + FCStd + previews |
+| `test_extended_tools.py` | Tests E2E (27 aserciones) contra FreeCAD real |
 
 Requisito: FreeCAD (flatpak) con el addon **FreeCADMCP** activo
 (`auto_start_rpc: true`, XML-RPC en `127.0.0.1:9875`).
 
-## Tools nuevas (17)
+## Tools nuevas (19)
 
 `save_document`, `open_document`, `close_document`, `export_model`,
 `get_camera`, `set_camera`, `fit_view`, `screenshot_current`, `set_color`,
 `apply_fillet`, `apply_chamfer`, `boolean_op`, `measure`, `transform_object`,
-`set_visibility`, `list_examples`, `get_example`.
+`set_visibility`, `mirror_object`, `list_examples`, `get_example`,
+`load_example`.
 
 Catálogo completo en `../freecad_mcp_tools.json` (validador:
 `../validate_freecad_mcp.py`).
 
 ## Registro de ejemplos
 
-`examples/examples.json` guarda los diseños aprobados como ejemplos
-reutilizables (metadatos, componentes, métricas, rutas al FCStd y a las
-previews). Se sirven con `list_examples` (resumen) y `get_example(id)`
-(ficha completa con rutas absolutas). Ejemplo incluido:
-`protesis-deportiva` (prótesis deportiva transtibial J-blade, aprobada en
-5 rondas).
+`examples/examples.json` guarda los diseños como ejemplos reutilizables
+(metadatos, componentes, métricas, rutas al FCStd y a las previews). Se
+sirven con `list_examples` (resumen), `get_example(id)` (ficha completa con
+rutas absolutas) y `load_example(id)` (abre el FCStd en FreeCAD). Ejemplos
+incluidos: `protesis-deportiva` (aprobada en 5 rondas) y
+`pierna-transfemoral` (pierna completa, en revisión).
 
 ## Modificaciones respecto al upstream
 

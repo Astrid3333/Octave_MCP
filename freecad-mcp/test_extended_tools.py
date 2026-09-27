@@ -24,7 +24,9 @@ from freecad_mcp.operations import (  # noqa: E402
     get_camera_operation,
     get_example_operation,
     list_examples_operation,
+    load_example_operation,
     measure_operation,
+    mirror_object_operation,
     open_document_operation,
     save_document_operation,
     screenshot_current_operation,
@@ -232,6 +234,30 @@ def main() -> int:
     m4 = payload(resp)
     record("documento reabierto", m4.get("success") is True, f"vol={m4.get('volume')}")
 
+    # --- espejo ------------------------------------------------------------
+    doc_open = opened or DOC
+    resp = measure_operation(conn, doc_open, "BaseCut")
+    mb = payload(resp)
+    bmin = mb.get("bbox", {}).get("min", [])
+    bmax = mb.get("bbox", {}).get("max", [])
+    v0 = mb.get("volume", 0)
+    resp = mirror_object_operation(conn, doc_open, "BaseCut", plane="XZ")
+    mi = payload(resp)
+    bb = mi.get("bbox") or []
+    ok_mirror = (
+        mi.get("success") is True
+        and mi.get("valid") is True
+        and len(bb) == 6
+        and abs(mi.get("volume", 0) - v0) < 1e-3
+        and len(bmin) == 3
+        and abs(bb[2] + bmax[1]) < 1e-6
+        and abs(bb[3] + bmin[1]) < 1e-6
+        and abs(bb[0] - bmin[0]) < 1e-6
+        and abs(bb[1] - bmax[0]) < 1e-6
+    )
+    record("mirror_object", ok_mirror,
+           f"valid={mi.get('valid')} vol={mi.get('volume')} bbox={bb}")
+
     # limpieza: cerrar doc de prueba
     if opened:
         close_document_operation(conn, opened)
@@ -240,7 +266,8 @@ def main() -> int:
     resp = list_examples_operation()
     lx = payload(resp)
     ids = [e.get("id") for e in lx.get("examples", [])]
-    record("list_examples", lx.get("success") is True and lx.get("count", 0) >= 1,
+    record("list_examples", lx.get("success") is True and lx.get("count", 0) >= 2
+           and {"protesis-deportiva", "pierna-transfemoral"} <= set(ids),
            f"count={lx.get('count')} ids={ids}")
 
     resp = get_example_operation("protesis-deportiva")
@@ -248,6 +275,21 @@ def main() -> int:
     record("get_example", gx.get("success") is True and gx.get("file_exists") is True
            and gx.get("metrics", {}).get("total_volume_mm3", 0) > 0,
            f"file={gx.get('file_exists')} previews={gx.get('previews_exist')}")
+
+    resp = get_example_operation("pierna-transfemoral")
+    gx2 = payload(resp)
+    record("get_example(pierna)", gx2.get("success") is True and gx2.get("file_exists") is True
+           and gx2.get("metrics", {}).get("total_volume_mm3", 0) > 0
+           and all(gx2.get("previews_exist", [])),
+           f"file={gx2.get('file_exists')} previews={gx2.get('previews_exist')}")
+
+    resp = load_example_operation(conn, "protesis-deportiva")
+    ld = payload(resp)
+    record("load_example", ld.get("success") is True
+           and ld.get("example_id") == "protesis-deportiva",
+           f"doc={ld.get('document')} file={bool(ld.get('example_file'))}")
+    if ld.get("document"):
+        close_document_operation(conn, ld["document"])
 
     elapsed = time.time() - t0
     fails = [r for r in RESULTS if not r[1]]

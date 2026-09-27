@@ -685,3 +685,62 @@ def set_visibility_operation(
     objs = [objects] if isinstance(objects, str) else list(objects)
     injected = f"DOC = {doc_name!r}\nOBJS = {objs!r}\nVIS = {visible!r}\n"
     return _run(freecad, injected, _VISIBILITY_BODY, "set_visibility")
+
+
+_MIRROR_BODY = '''
+try:
+    doc = FreeCAD.getDocument(DOC)
+    o = doc.getObject(OBJ)
+    if o is None:
+        raise ValueError("Objeto no existe: " + OBJ)
+    planes = {
+        "XY": (FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 0, 1)),
+        "XZ": (FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 1, 0)),
+        "YZ": (FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(1, 0, 0)),
+    }
+    if PLANE not in planes:
+        raise ValueError("plane debe ser XY, XZ o YZ")
+    base, normal = planes[PLANE]
+    if OFFSET:
+        base = base + normal.multiply(float(OFFSET))
+    mirrored = o.Shape.mirror(base, normal)
+    if mirrored.isNull():
+        raise ValueError("mirror devolvio una forma nula")
+    if mirrored.Solids:
+        mirrored = mirrored.Solids[0]
+    name = (OBJ + "_mirror")
+    if doc.getObject(name):
+        doc.removeObject(name)
+    new = doc.addObject("Part::Feature", name)
+    new.Shape = mirrored
+    if o.ViewObject is not None and new.ViewObject is not None:
+        try:
+            new.ViewObject.ShapeColor = o.ViewObject.ShapeColor
+        except Exception:
+            pass
+    doc.recompute()
+    _mcp_emit({
+        "success": True, "object": new.Name, "source": OBJ, "plane": PLANE,
+        "offset": float(OFFSET), "valid": mirrored.isValid(),
+        "volume": mirrored.Volume,
+        "bbox": [mirrored.BoundBox.XMin, mirrored.BoundBox.XMax,
+                 mirrored.BoundBox.YMin, mirrored.BoundBox.YMax,
+                 mirrored.BoundBox.ZMin, mirrored.BoundBox.ZMax],
+    })
+except Exception as e:
+    _mcp_emit({"success": False, "error": str(e)})
+'''
+
+
+def mirror_object_operation(
+    freecad: FreeCADConnection,
+    doc_name: str,
+    obj_name: str,
+    plane: str,
+    offset: float = 0.0,
+) -> ToolResponse:
+    injected = (
+        f"DOC = {doc_name!r}\nOBJ = {obj_name!r}\n"
+        f"PLANE = {plane!r}\nOFFSET = {offset!r}\n"
+    )
+    return _run(freecad, injected, _MIRROR_BODY, "mirror_object")

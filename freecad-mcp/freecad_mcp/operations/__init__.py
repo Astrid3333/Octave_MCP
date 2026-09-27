@@ -14,6 +14,7 @@ from .core import (
 from .examples_ops import (
     get_example_operation,
     list_examples_operation,
+    load_example_operation,
 )
 from .extended import (
     apply_chamfer_operation,
@@ -24,6 +25,7 @@ from .extended import (
     fit_view_operation,
     get_camera_operation,
     measure_operation,
+    mirror_object_operation,
     open_document_operation,
     save_document_operation,
     screenshot_current_operation,
@@ -47,6 +49,8 @@ __all__ = [
     "list_documents_operation",
     "get_example_operation",
     "list_examples_operation",
+    "load_example_operation",
+    "mirror_object_operation",
     "apply_chamfer_operation",
     "apply_fillet_operation",
     "boolean_op_operation",

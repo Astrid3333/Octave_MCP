@@ -91,3 +91,33 @@ def get_example_operation(example_id: str) -> ToolResponse:
     out["preview_paths"] = preview_paths
     out["previews_exist"] = [os.path.exists(p) for p in preview_paths]
     return json_response(out)
+
+
+def load_example_operation(freecad, example_id: str) -> ToolResponse:
+    """Abre el FCStd de un ejemplo registrado en FreeCAD (delega en
+    ``open_document_operation``) y devuelve los datos del ejemplo."""
+    try:
+        registry = load_registry()
+    except Exception as exc:  # noqa: BLE001
+        return text_response(f"load_example: {exc}")
+    ex = _find(registry, example_id)
+    if ex is None:
+        available = [e.get("id") for e in registry.get("examples", [])]
+        return text_response(
+            f"load_example: ejemplo no encontrado: {example_id!r}; "
+            f"disponibles: {available}"
+        )
+    file_path = os.path.join(_examples_dir(), ex.get("file", ""))
+    if not os.path.exists(file_path):
+        return text_response(f"load_example: archivo no existe: {file_path}")
+    from .extended import open_document_operation
+
+    resp = open_document_operation(freecad, file_path)
+    try:
+        data = json.loads(resp[0].text)
+    except Exception:  # noqa: BLE001 - open_document devolvio texto plano
+        return resp
+    if isinstance(data, dict):
+        data["example_id"] = ex.get("id")
+        data["example_file"] = file_path
+    return json_response(data)
