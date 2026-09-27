@@ -187,7 +187,7 @@
     {
       "id": "pierna-transfemoral",
       "name": "Pierna completa transfemoral",
-      "description": "Prototipo de pierna completa transfemoral: socket de muslo con 11 secciones elipticas y brim anterior inclinado 18 grados, rodilla mecanica de bloque con eje transversal y tapas, placa adaptadora chaflanada, pylon de titanio conico, adaptador de tarso con chaflanes y fillets, tornillos hex con arandelas, y pie SACH modelado por loft de 6 secciones rectangular-redondeadas de talon a puntera.",
+      "description": "Prototipo de pierna completa transfemoral con rodilla monoaxial articulable: socket de muslo con 11 secciones elipticas y brim anterior inclinado 18 grados, horquilla de muslo con eje transversal (Rodilla_Muslo) y condilo+tallo (Rodilla_Tibia) que giran sobre el eje en z=378, placa adaptadora chaflanada, pylon de titanio conico, adaptador de tarso, tornillos hex con arandelas, y pie SACH por loft de 6 secciones. Demo de flexion renderizada a 0, 20, 45 y 60 grados.",
       "units": "mm",
       "created": "2026-09-27",
       "approved": false,
@@ -200,8 +200,9 @@
       ],
       "objects": [
         "Socket_TF",
-        "Rodilla_TF",
         "Adaptador_TF",
+        "Rodilla_Muslo",
+        "Rodilla_Tibia",
         "Pylon_TF",
         "Adaptador_Tarso",
         "Tornillos_Pie",
@@ -220,15 +221,28 @@
           ]
         },
         "rodilla": {
-          "tipo": "bloque con eje transversal",
-          "caja_mm": [
-            76,
-            56,
-            64
-          ],
-          "fillet_mm": 5.0,
+          "tipo": "monoaxial articulable",
+          "horquilla": {
+            "mejillas_mm": [
+              76,
+              8,
+              64
+            ],
+            "puente_mm": [
+              76,
+              56,
+              14
+            ]
+          },
+          "condilo_r_mm": 14.0,
           "eje_r_mm": 6.5,
-          "tapa_r_mm": 11.0
+          "eje_z_mm": 378.0,
+          "tallo_mm": [
+            28,
+            36,
+            32
+          ],
+          "holgura_lateral_mm": 2.0
         },
         "adaptador": {
           "material": "aluminio anodizado",
@@ -270,10 +284,24 @@
             255.0
           ],
           "altura_max_mm": 72.3
+        },
+        "demo_flexion": {
+          "angulos_deg": [
+            0,
+            20,
+            45,
+            60
+          ],
+          "eje": "Y",
+          "centro_mm": [
+            0,
+            0,
+            378
+          ]
         }
       },
       "metrics": {
-        "total_volume_mm3": 1812443.8,
+        "total_volume_mm3": 1713131.4,
         "scene_bbox_mm": [
           -66.5,
           255.0,
@@ -297,15 +325,15 @@
             ]
           },
           {
-            "name": "Rodilla_TF",
-            "volume_mm3": 273015.2,
+            "name": "Pylon_TF",
+            "volume_mm3": 122980.3,
             "bbox": [
-              -38.0,
-              38.0,
-              -40.0,
-              40.0,
-              346.0,
-              410.0
+              -13.5,
+              13.5,
+              -13.4,
+              13.4,
+              96.0,
+              346.0
             ]
           },
           {
@@ -318,18 +346,6 @@
               22.0,
               406.0,
               430.0
-            ]
-          },
-          {
-            "name": "Pylon_TF",
-            "volume_mm3": 122980.3,
-            "bbox": [
-              -13.5,
-              13.5,
-              -13.4,
-              13.4,
-              96.0,
-              346.0
             ]
           },
           {
@@ -378,6 +394,30 @@
               34.1,
               0.0,
               72.3
+            ]
+          },
+          {
+            "name": "Rodilla_Muslo",
+            "volume_mm3": 130363.3,
+            "bbox": [
+              -38.0,
+              38.0,
+              -40.0,
+              40.0,
+              346.0,
+              410.0
+            ]
+          },
+          {
+            "name": "Rodilla_Tibia",
+            "volume_mm3": 43339.5,
+            "bbox": [
+              -14.0,
+              14.0,
+              -18.0,
+              18.0,
+              346.0,
+              392.0
             ]
           }
         ]
