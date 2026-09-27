@@ -1,6 +1,6 @@
 {
   "mcpName": "Octave_MCP",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "MCP Octave - plataforma completa de asistencia científica",
   "tools": [
     {
@@ -431,6 +431,48 @@
     },
     {
       "id": 72,
+      "name": "octave_help",
+      "category": "Herramientas avanzadas / especializadas",
+      "description": "Proporciona ayuda y documentación sobre el uso de las tools MCP Octave y sus categorías"
+    },
+    {
+      "id": 73,
+      "name": "octave_surf",
+      "category": "Visualización y gráficos",
+      "description": "surf: graficar superficie 3D a partir de matrices de coordenadas o funciones"
+    },
+    {
+      "id": 74,
+      "name": "octave_isosurface",
+      "category": "Visualización y gráficos",
+      "description": "isosurface: extraer superficie isosuperficial de datos tridimensionales (volumetric data)"
+    },
+    {
+      "id": 75,
+      "name": "octave_quiver3",
+      "category": "Visualización y gráficos",
+      "description": "quiver3: graficar campos vectoriales 3D con flechas indicando dirección y magnitud"
+    },
+    {
+      "id": 76,
+      "name": "octave_griddata3",
+      "category": "Matemáticas: interpolación",
+      "description": "griddata3: interpolación 3D de datos dispersos usando métodos linear, cubic, pchip o nearest"
+    },
+    {
+      "id": 77,
+      "name": "octave_interp3",
+      "category": "Matemáticas: interpolación",
+      "description": "interp3: interpolación trilineal de datos grilla 3D"
+    },
+    {
+      "id": 78,
+      "name": "octave_convhull",
+      "category": "Matemáticas: geometría",
+      "description": "convhull: calcular el convex hull (envoltorio convexo) de un conjunto de puntos 3D"
+    },
+    {
+      "id": 79,
       "name": "finish",
       "category": "Orden y finalización",
       "description": "Marcador de finalización de herramientas MCP Octave - reordena y cierra el catálogo de herramientas"

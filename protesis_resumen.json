@@ -1,0 +1,12 @@
+{
+  "nombre": "Protesis clasica transtibial",
+  "unidades": "mm",
+  "componentes": {
+    "pie": {"largo": 260, "ancho": 100, "alto": 70},
+    "pylon": {"largo": 350, "diametro": 30},
+    "socket": {"ancho": 95, "profundo": 85, "alto": 180},
+    "rodilla": {"radio_eje": 15, "largo_eje": 40}
+  },
+  "altura_total_mm": 615,
+  "archivos_csv": ["protesis_pie_planta.csv", "protesis_pie_dorso.csv", "protesis_pylon.csv", "protesis_socket.csv", "protesis_rodilla.csv"]
+}

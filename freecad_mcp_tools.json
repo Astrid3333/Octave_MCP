@@ -1,0 +1,172 @@
+{
+  "mcpName": "FreeCAD_MCP",
+  "version": "1.0.0",
+  "description": "FreeCAD MCP (fork local con 26 tools): 11 upstream de creacion y captura + 15 nuevas de documentos, camara, modelado, medicion y exportacion",
+  "tools": [
+    {
+      "id": 1,
+      "name": "create_document",
+      "category": "Documentos",
+      "description": "Crear un documento nuevo en FreeCAD con el nombre indicado"
+    },
+    {
+      "id": 2,
+      "name": "list_documents",
+      "category": "Documentos",
+      "description": "Listar los documentos abiertos actualmente en FreeCAD"
+    },
+    {
+      "id": 3,
+      "name": "save_document",
+      "category": "Documentos",
+      "description": "Guardar un documento abierto como .FCStd en una ruta absoluta (o en su archivo actual si ya fue guardado)"
+    },
+    {
+      "id": 4,
+      "name": "open_document",
+      "category": "Documentos",
+      "description": "Abrir un documento .FCStd desde disco y devolver la lista de documentos abiertos"
+    },
+    {
+      "id": 5,
+      "name": "close_document",
+      "category": "Documentos",
+      "description": "Cerrar un documento abierto sin guardar y devolver los documentos restantes"
+    },
+    {
+      "id": 6,
+      "name": "create_object",
+      "category": "Objetos: creacion y edicion",
+      "description": "Crear un objeto (Part::, Draft::, PartDesign::, Fem::) en un documento con sus propiedades, color y placement; devuelve captura del resultado"
+    },
+    {
+      "id": 7,
+      "name": "edit_object",
+      "category": "Objetos: creacion y edicion",
+      "description": "Modificar propiedades de un objeto existente cuando create_object no alcanza; devuelve captura del objeto"
+    },
+    {
+      "id": 8,
+      "name": "delete_object",
+      "category": "Objetos: creacion y edicion",
+      "description": "Eliminar un objeto de un documento; devuelve captura tras la eliminacion"
+    },
+    {
+      "id": 9,
+      "name": "insert_part_from_library",
+      "category": "Objetos: creacion y edicion",
+      "description": "Insertar una pieza desde el addon de libreria de partes por ruta relativa; devuelve captura"
+    },
+    {
+      "id": 10,
+      "name": "get_parts_list",
+      "category": "Objetos: creacion y edicion",
+      "description": "Obtener la lista de piezas disponibles en el addon de libreria de partes"
+    },
+    {
+      "id": 11,
+      "name": "get_objects",
+      "category": "Objetos: consulta",
+      "description": "Listar todos los objetos de un documento con su tipo y propiedades basicas, para decidir que editar"
+    },
+    {
+      "id": 12,
+      "name": "get_object",
+      "category": "Objetos: consulta",
+      "description": "Obtener un objeto concreto con todas sus propiedades y captura; base para cualquier edicion"
+    },
+    {
+      "id": 13,
+      "name": "execute_code",
+      "category": "Ejecucion de codigo",
+      "description": "Ejecutar Python arbitrario dentro de FreeCAD (con FreeCAD, FreeCADGui y stderr capturados) y devolver salida, estado y captura"
+    },
+    {
+      "id": 14,
+      "name": "get_view",
+      "category": "Camara y vistas",
+      "description": "Captura con preset de vista (Isometric, Front, Top, Right, Left, Bottom, Rear, Dimetric, Trimetric), encuadre opcional de un objeto y resolucion fija"
+    },
+    {
+      "id": 15,
+      "name": "screenshot_current",
+      "category": "Camara y vistas",
+      "description": "Capturar el viewport tal cual esta, sin mover ni re-encuadrar la camara (a diferencia de get_view, que aplica preset); preserva la camara aunque se pida resolucion fija"
+    },
+    {
+      "id": 16,
+      "name": "fit_view",
+      "category": "Camara y vistas",
+      "description": "Encuadrar la geometria: preset de vista opcional, fitAll o enfoque en un objeto, con reparacion de near/far/height segun el bounding box real de la escena"
+    },
+    {
+      "id": 17,
+      "name": "get_camera",
+      "category": "Camara y vistas",
+      "description": "Leer el estado de la camara (tipo, position, orientation, near/far, height) mas centro y diagonal del bounding box de la escena, en formato OpenInventor"
+    },
+    {
+      "id": 18,
+      "name": "set_camera",
+      "category": "Camara y vistas",
+      "description": "Fijar parametros de camara sin tocar los no indicados: position, orientation, tipo orto/perspectiva, height y clip; devuelve readback de lo aplicado"
+    },
+    {
+      "id": 19,
+      "name": "set_color",
+      "category": "Apariencia y visibilidad",
+      "description": "Fijar color de relleno, transparencia y color de linea de un objeto (valores 0..1); devuelve los valores aplicados"
+    },
+    {
+      "id": 20,
+      "name": "set_visibility",
+      "category": "Apariencia y visibilidad",
+      "description": "Mostrar u ocultar uno o varios objetos en la vista 3D y listar los actualizados"
+    },
+    {
+      "id": 21,
+      "name": "apply_fillet",
+      "category": "Operaciones geometricas",
+      "description": "Redondear aristas de un Part::Feature con un radio dado (aristas puntuales o todas); reemplaza la forma in situ y reporta volumen y validez"
+    },
+    {
+      "id": 22,
+      "name": "apply_chamfer",
+      "category": "Operaciones geometricas",
+      "description": "Achaflanar aristas de un Part::Feature con una distancia dada (aristas puntuales o todas); reemplaza la forma in situ y reporta volumen y validez"
+    },
+    {
+      "id": 23,
+      "name": "boolean_op",
+      "category": "Operaciones geometricas",
+      "description": "Operacion booleana union/cut/intersect entre dos objetos que crea un Part::Feature nuevo con volumen y validez del resultado"
+    },
+    {
+      "id": 24,
+      "name": "transform_object",
+      "category": "Operaciones geometricas",
+      "description": "Mover y rotar un objeto via Placement (primero rotacion, luego traslacion global); devuelve el placement resultante"
+    },
+    {
+      "id": 25,
+      "name": "measure",
+      "category": "Medicion",
+      "description": "Medir geometria: propiedades (volumen, area, bbox, centro de masa) de un objeto, distancia entre dos objetos o bounding box de toda la escena"
+    },
+    {
+      "id": 26,
+      "name": "export_model",
+      "category": "Exportacion",
+      "description": "Exportar objetos a STEP, IGES, STL, OBJ, PLY, OFF, AMF, 3MF, BREP o FCStd eligiendo el formato por la extension; devuelve ruta y bytes"
+    }
+  ],
+  "designPrinciples": [
+    "Una sola puerta de entrada: todo lo que no es RPC tipado pasa por execute_code con el mismo preamble de seguridad",
+    "La camara nunca se mueve por accidente: screenshot_current preserva el estado y fit_view/set_camera son las dos formas explicitas de cambiarla",
+    "Encuadre verificable: fit_view reporta near/far/height calculados sobre el bounding box real de la escena, no sobre estimaciones",
+    "Respuestas JSON consistentes: toda operacion emite success, datos utiles y error legible en un unico objeto",
+    "Los snippets corren en el hilo GUI de FreeCAD con TIMEOUT limitado: operaciones largas se evitan y los fallos se reportan sin dejar la cola colgada",
+    "Upstream intacto: las 11 tools originales conservan su comportamiento y firmas; las nuevas solo se agregan, nunca se redefinen",
+    "Toda tool nueva se valida con tests E2E contra FreeCAD real antes de publicarse"
+  ]
+}
