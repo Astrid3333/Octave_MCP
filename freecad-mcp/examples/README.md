@@ -65,7 +65,8 @@ Fotos: `flex4b_{00,15,30,45}.png`.
   aprobada en 5 rondas iterativas.
 - **Materiales** (pieza impresa / equivalente clínico):
   - `Socket`: resina térmica anatómica (brim cortado a 18.4°) / PLA+ prototipo.
-  - `Blade_Carbon`: PLA/CF o fibra de carbono real (curva J con ease de remate).
+  - `Blade_Carbon`: **fibra de carbono** (lámina o preimpregnado curado,
+    curva J con ease de remate) — material final, no PLA.
   - `Pylon_Titanio`: titanio real; impreso = PETG 100 % sólo como maqueta.
   - `Adaptador`, `Anillo_Monta`: aluminio anodizado / acero (o PLA plata).
   - `Tornillos`, `Arandelas`, `Bulones`: tornillería estándar o PETG.
