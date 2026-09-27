@@ -13,6 +13,7 @@ from .operations import (
     close_document_operation,
     create_document_operation,
     create_object_operation,
+    create_prosthesis_operation,
     delete_object_operation,
     edit_object_operation,
     execute_code_operation,
@@ -788,6 +789,33 @@ def load_example(ctx: Context, example_id: str) -> list[TextContent]:
         absolute file path that was loaded.
     """
     return load_example_operation(get_freecad_connection(), example_id)
+
+
+@mcp.tool()
+def create_prosthesis(
+    ctx: Context,
+    prosthesis_type: Literal["transradial"] = "transradial",
+    side: Literal["right", "left"] = "right",
+    scale: float = 1.0,
+) -> list[TextContent]:
+    """Create a parametric prosthesis in a new FreeCAD document.
+
+    Currently supports type 'transradial' (below-elbow arm prosthesis:
+    residual-limb socket, wrist adapter, wrist pin and static hand with
+    thumb), mirrored for left/right side and scaled uniformly.
+
+    Args:
+        prosthesis_type: Prosthesis type; only 'transradial' is supported.
+        side: 'right' or 'left' (thumb and asymmetries mirror accordingly).
+        scale: Uniform scale factor in [0.5, 2.0] (1.0 = adult size).
+
+    Returns:
+        JSON with the created document name, per-object volumes/bboxes and
+        the total volume in mm3.
+    """
+    return create_prosthesis_operation(
+        get_freecad_connection(), prosthesis_type, side, scale
+    )
 
 
 @mcp.tool()

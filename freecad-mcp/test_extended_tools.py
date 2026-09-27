@@ -19,6 +19,7 @@ from freecad_mcp.operations import (  # noqa: E402
     apply_fillet_operation,
     boolean_op_operation,
     close_document_operation,
+    create_prosthesis_operation,
     export_model_operation,
     fit_view_operation,
     get_camera_operation,
@@ -290,6 +291,33 @@ def main() -> int:
            f"doc={ld.get('document')} file={bool(ld.get('example_file'))}")
     if ld.get("document"):
         close_document_operation(conn, ld["document"])
+
+    # --- create_prosthesis (transradial) ---------------------------------
+    resp = create_prosthesis_operation(conn, "transradial", "right", 1.0)
+    cp = payload(resp)
+    objs_r = cp.get("objects") or []
+    bb_r = (next((o for o in objs_r if o.get("name") == "Mano"), {}) or {}).get("bbox") or []
+    ok_r = (cp.get("success") is True and len(objs_r) >= 4
+            and all(o.get("volume", 0) > 0 for o in objs_r)
+            and len(bb_r) == 6 and bb_r[1] > 22.0)
+    record("create_prosthesis(der)", ok_r,
+           f"doc={cp.get('document')} objs={len(objs_r)} "
+           f"total={cp.get('total_volume')} mano_bbox={bb_r}")
+
+    resp2 = create_prosthesis_operation(conn, "transradial", "left", 0.8)
+    cp2 = payload(resp2)
+    objs_l = cp2.get("objects") or []
+    bb_l = (next((o for o in objs_l if o.get("name") == "Mano"), {}) or {}).get("bbox") or []
+    ok_l = (cp2.get("success") is True and len(objs_l) >= 4
+            and len(bb_l) == 6 and bb_l[0] < -22.0
+            and cp2.get("total_volume", 0) < cp.get("total_volume", 0))
+    record("create_prosthesis(izq, escala 0.8)", ok_l,
+           f"doc={cp2.get('document')} objs={len(objs_l)} "
+           f"total={cp2.get('total_volume')} mano_bbox={bb_l}")
+
+    for dname in (cp.get("document"), cp2.get("document")):
+        if dname:
+            close_document_operation(conn, dname)
 
     elapsed = time.time() - t0
     fails = [r for r in RESULTS if not r[1]]

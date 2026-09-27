@@ -1,6 +1,6 @@
 {
   "mcpName": "FreeCAD_MCP",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "FreeCAD MCP (fork local con 30 tools): 11 upstream de creacion y captura + 19 nuevas de documentos, camara, modelado, medicion, exportacion, ejemplos y espejo",
   "tools": [
     {
@@ -182,6 +182,12 @@
       "name": "mirror_object",
       "category": "Operaciones geometricas",
       "description": "Reflejar la forma de un objeto sobre un plano (XY, XZ o YZ con desplazamiento opcional) creando un nuevo objeto"
+    },
+    {
+      "id": 31,
+      "name": "create_prosthesis",
+      "category": "Prototipado de protesis",
+      "description": "Crear una protesis parametrica en un documento nuevo (tipo transradial: socket, adaptador de muneca, eje y mano estatica) con lado izq/der y escala uniforme"
     }
   ],
   "designPrinciples": [

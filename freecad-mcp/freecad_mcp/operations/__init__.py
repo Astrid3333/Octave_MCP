@@ -16,6 +16,9 @@ from .examples_ops import (
     list_examples_operation,
     load_example_operation,
 )
+from .prosthesis_ops import (
+    create_prosthesis_operation,
+)
 from .extended import (
     apply_chamfer_operation,
     apply_fillet_operation,
@@ -50,6 +53,7 @@ __all__ = [
     "get_example_operation",
     "list_examples_operation",
     "load_example_operation",
+    "create_prosthesis_operation",
     "mirror_object_operation",
     "apply_chamfer_operation",
     "apply_fillet_operation",
