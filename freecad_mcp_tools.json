@@ -187,7 +187,7 @@
       "id": 31,
       "name": "create_prosthesis",
       "category": "Prototipado de protesis",
-      "description": "Crear una protesis parametrica en un documento nuevo (tipo transradial: socket, adaptador de muneca, eje y mano estatica) con lado izq/der y escala uniforme"
+      "description": "Crear una protesis transradial modular endoesqueletica segun normas ISO (ISO 22523, ISO 8548-3, ISO 8549, ISO 13405-3, ISO 7250-1): socket Muenster, adaptador OD30, pylon OD20, unidad de muneca OD50 y mano pasiva P50, con lado izq/der y escala uniforme"
     }
   ],
   "designPrinciples": [

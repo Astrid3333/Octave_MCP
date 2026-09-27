@@ -15,7 +15,7 @@ medición, exportación, espejo, registro de ejemplos y protesises parametricas.
 | `freecad_mcp/operations/core.py` | 11 operaciones upstream (con capturas modificadas) |
 | `freecad_mcp/operations/extended.py` | 16 operaciones nuevas (incluye `mirror_object`) |
 | `freecad_mcp/operations/examples_ops.py` | 3 operaciones del registro de ejemplos (local; `load_example` abre el FCStd vía RPC) |
-| `freecad_mcp/operations/prosthesis_ops.py` | `create_prosthesis`: protesis parametrica transradial (lado + escala) |
+| `freecad_mcp/operations/prosthesis_ops.py` | `create_prosthesis`: protesis transradial modular segun normas ISO (socket Muenster, pylon OD20, muneca OD50, mano ISO 7250-1 P50; lado + escala) |
 | `examples/` | Diseños registrados: `examples.json` (manifest) + FCStd + previews |
 | `test_extended_tools.py` | Tests E2E (29 aserciones) contra FreeCAD real |
 

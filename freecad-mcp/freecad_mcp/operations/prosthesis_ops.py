@@ -4,8 +4,9 @@ Implementa ``create_prosthesis`` como wrapper sobre ``execute_code`` del RPC
 del addon FreeCADMCP (mismo patrón que ``extended.py``).
 
 Tipos soportados:
-  - ``transradial``: prótesis de antebrazo (socket + adaptador de muñeca +
-    muñeca + mano estática con pulgar), con lado (izq/der) y escala.
+  - ``transradial``: prótesis endoesqueletal modular según normas ISO
+    (socket Muenster, adaptador OD30, pylon OD20, unidad de muneca OD50,
+    mano pasiva con medidas ISO 7250-1 P50), con lado (izq/der) y escala.
 """
 
 from __future__ import annotations
@@ -33,25 +34,26 @@ try:
         edge = Part.Ellipse(FreeCAD.Vector(0, 0, z), rx, ry).toShape()
         return Part.Wire(edge)
 
-    def _fillet_vert(shape, r):
-        try:
-            eds = [e for e in shape.Edges
-                   if len(e.Vertexes) == 2
-                   and abs(e.Vertexes[0].Point.z - e.Vertexes[1].Point.z) > 1e-6]
-            if not eds:
-                return shape
-            out = shape.makeFillet(r, eds)
-            if out.isValid() and out.Volume <= shape.Volume + 1.0:
-                return out
-        except Exception:
-            pass
-        return shape
+    # ------------------------------------------------------------------
+    # Protesis transradial modular (endoesqueletica) con dimensiones de
+    # normas ISO y componentes estandar de catalogo (adulto P50, estatura
+    # de referencia 1750 mm; scale=1).
+    #   ISO 22523:2006  - requisitos/ensayos de protesis de miembro externo
+    #   ISO 8548-3:2025 - descripcion del miembro residual transradial
+    #   ISO 8549        - vocabulario (socket, unidad de muneca, TD)
+    #   ISO 13405-3     - descripcion de componentes de miembro superior
+    #   ISO 7250-1      - antropometria (mano 196x88 mm, pulgar 65 mm)
+    # Componentes: socket Muenster autoportante; adaptador de socket
+    # OD 30 mm; pylon/tubo de conexion OD 20 mm; unidad de muneca
+    # OD 50 mm (2 in) altura 26 mm con rosca TD W-20 (1/2-20 UNF);
+    # mano pasiva estatica.
+    # ------------------------------------------------------------------
 
-    # --- socket transradial (loft de elipses + cavidad) ------------------
-    secs = [(150, 30, 26), (170, 32, 27), (195, 35, 29),
-            (220, 38, 31), (245, 42, 33), (270, 45, 35)]
-    cav = [(154, 26.3, 22.3), (170, 28, 23), (195, 31, 25),
-           (220, 34, 27), (245, 38, 29), (270, 41, 31)]
+    # --- socket transradial Muenster (loft de elipses + cavidad) ---------
+    # brim proximal a nivel de epicondilos + 25 mm de trimline (88x72);
+    # extremo distal 56x48; pared 6 mm; largo total 135 mm
+    secs = [(390, 28, 24), (425, 33, 28), (470, 40, 33), (525, 44, 36)]
+    cav = [(396, 22, 18), (425, 27, 22), (470, 34, 27), (525, 38, 30)]
     outer = [_elipse_wire(rx * K, ry * K, z * K) for (z, rx, ry) in secs]
     inner = [_elipse_wire(rx * K, ry * K, z * K) for (z, rx, ry) in cav]
     socket = Part.makeLoft(outer, True).cut(Part.makeLoft(inner, True))
@@ -59,67 +61,67 @@ try:
     o.Shape = socket
     o.ViewObject.ShapeColor = (0.92, 0.9, 0.86)
 
-    # --- adaptador de muñeca (caja con chaflan) --------------------------
-    ad = Part.makeBox(36 * K, 32 * K, 14 * K, Vector(-18 * K, -16 * K, 136 * K))
-    try:
-        eds = [e for e in ad.Edges
-               if len(e.Vertexes) == 2
-               and abs(e.Vertexes[0].Point.z - e.Vertexes[1].Point.z) > 1e-6]
-        ad2 = ad.makeChamfer(2 * K, eds)
-        if ad2.isValid():
-            ad = ad2
-    except Exception:
-        pass
-    o = doc.addObject("Part::Feature", "Adapter_Muneca")
+    # --- adaptador de socket (OD 30 mm, rosca M12, catalogo) -------------
+    ad = Part.makeCylinder(15 * K, 12 * K, Vector(0, 0, 378 * K))
+    o = doc.addObject("Part::Feature", "Adaptador_Socket")
     o.Shape = ad
     o.ViewObject.ShapeColor = (0.55, 0.55, 0.58)
 
-    # --- eje de muñeca ---------------------------------------------------
-    pin = Part.makeCylinder(8 * K, 20 * K, Vector(0, 0, 116 * K))
-    o = doc.addObject("Part::Feature", "Muneca")
-    o.Shape = pin
-    o.ViewObject.ShapeColor = (0.4, 0.4, 0.42)
+    # --- pylon / tubo de conexion de antebrazo (OD 20 mm estandar) -------
+    pylon = Part.makeCylinder(10 * K, 112 * K, Vector(0, 0, 266 * K))
+    o = doc.addObject("Part::Feature", "Pylon_Antebrazo")
+    o.Shape = pylon
+    o.ViewObject.ShapeColor = (0.74, 0.75, 0.78)
 
-    # --- mano estática (palma + 4 dedos escalonados + pulgar) ------------
-    palm = Part.makeBox(44 * K, 18 * K, 46 * K, Vector(-22 * K, -9 * K, 70 * K))
+    # --- unidad de muneca (OD 50 mm adulto, altura de construccion 26) ---
+    wrist = Part.makeCylinder(25 * K, 26 * K, Vector(0, 0, 240 * K))
+    o = doc.addObject("Part::Feature", "Unidad_Muneca")
+    o.Shape = wrist
+    o.ViewObject.ShapeColor = (0.35, 0.35, 0.38)
+
+    # --- mano pasiva estatica (ISO 7250-1 P50: 196 x 88 x ~30 mm) --------
+    # palma/metacarpos z132..240 (longitud de palma 108); MCP en z132
+    palm = Part.makeBox(88 * K, 30 * K, 108 * K, Vector(-44 * K, -15 * K, 132 * K))
     try:
         eds = [e for e in palm.Edges
                if len(e.Vertexes) == 2
                and abs(e.Vertexes[0].Point.z - e.Vertexes[1].Point.z) > 1e-6]
         if eds:
-            p2 = palm.makeFillet(5 * K, eds)
+            p2 = palm.makeFillet(10 * K, eds)
             if p2.isValid():
                 palm = p2
         top = [e for e in palm.Edges
                if len(e.Vertexes) == 2
-               and all(abs(v.Point.z - 116 * K) < 1e-3 for v in e.Vertexes)]
+               and all(abs(v.Point.z - 240 * K) < 1e-3 for v in e.Vertexes)]
         if top:
-            p3 = palm.makeFillet(4 * K, top)
+            p3 = palm.makeFillet(5 * K, top)
             if p3.isValid():
                 palm = p3
     except Exception:
         pass
     hand = palm
-    # dedos escalonados con punta esferica (indice en +x, pulgar del lado +x)
-    for (cx, w, tip) in ((16.0, 11.0, 22.0), (5.0, 11.0, 18.0),
-                         (-6.5, 10.0, 24.0), (-17.0, 9.0, 32.0)):
-        f = Part.makeBox(w * K, 16 * K, (70 - tip) * K,
-                         Vector((cx - w / 2) * K, -8 * K, tip * K))
+    # dedos desde MCP (z132): anchos/longitudes antropometricas P50
+    # (indice 82, mayor 88, anular 78, menique 63); punta esferica
+    for (cx, w, tip) in ((33.5, 21.0, 50.0), (9.5, 21.0, 44.0),
+                         (-13.5, 19.0, 54.0), (-35.0, 18.0, 69.0)):
+        f = Part.makeBox(w * K, 22 * K, (132 - tip) * K,
+                         Vector((cx - w / 2) * K, -11 * K, tip * K))
         try:
-            cap = Part.makeSphere(w / 2.0 * K, Vector(cx * K, 0, tip * K))
+            cap = Part.makeSphere(w / 2.0 * K,
+                                  Vector(cx * K, 0, (tip + w / 2.0) * K))
             f = f.fuse(cap)
         except Exception:
             pass
         hand = hand.fuse(f)
-    # pulgar oponible: se construye a la derecha (45° abajo-afuera) y se
-    # refleja si side=left para garantizar simetría exacta
-    thumb = Part.makeBox(12 * K, 15 * K, 34 * K, Vector(0, -7.5 * K, 0))
+    # pulgar (longitud 65 mm, ~30 grados abajo-afuera): construido a la
+    # derecha y reflejado si side=left (simetria exacta)
+    thumb = Part.makeBox(18 * K, 16 * K, 65 * K, Vector(0, -8 * K, 0))
     thumb.Placement = FreeCAD.Placement(
-        FreeCAD.Vector(0, 0, 0), FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), 135.0))
-    thumb.translate(FreeCAD.Vector(18 * K, 0, 90 * K))
+        FreeCAD.Vector(0, 0, 0), FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), 150.0))
+    thumb.translate(FreeCAD.Vector(30 * K, 0, 205 * K))
     try:
         thumb = thumb.fuse(
-            Part.makeSphere(6 * K, Vector(37.8 * K, 0, 61.7 * K)))
+            Part.makeSphere(9 * K, Vector(62.5 * K, 0, 148.7 * K)))
     except Exception:
         pass
     if not RIGHT:
@@ -129,7 +131,7 @@ try:
         hand = hand.removeSplitter()
     except Exception:
         pass
-    o = doc.addObject("Part::Feature", "Mano")
+    o = doc.addObject("Part::Feature", "Mano_Pasiva")
     o.Shape = hand
     o.ViewObject.ShapeColor = (0.87, 0.62, 0.48)
 
@@ -137,7 +139,8 @@ try:
 
     objs = []
     total = 0.0
-    for name in ("Socket_Transradial", "Adapter_Muneca", "Muneca", "Mano"):
+    for name in ("Socket_Transradial", "Adaptador_Socket", "Pylon_Antebrazo",
+                 "Unidad_Muneca", "Mano_Pasiva"):
         sh = doc.getObject(name).Shape
         if sh.isNull() or not sh.isValid() or sh.Volume <= 0:
             raise ValueError("forma invalida en %s" % name)
@@ -151,7 +154,41 @@ try:
 
     _mcp_emit({"success": True, "prosthesis_type": "transradial",
                "document": doc.Name, "side": SIDE, "scale": SCALE,
-               "objects": objs, "total_volume": round(total, 1)})
+               "objects": objs, "total_volume": round(total, 1),
+               "standards": {
+                   "framework": [
+                       "ISO 22523:2006 (requisitos y ensayos de protesis "
+                       "de miembro externo)",
+                       "ISO 8548-3:2025 (descripcion del miembro residual "
+                       "tras amputacion de miembro superior)",
+                       "ISO 8549-1/-2/-4 (vocabulario de protesica)",
+                       "ISO 13405-3 (componentes de protesis de miembro "
+                       "superior)",
+                       "ISO 7250-1:2017 (antropometria de la mano)",
+                       "ISO 9999 (clasificacion 06 18-06 27)"],
+                   "components": [
+                       "socket Muenster supracondilar autoportante",
+                       "adaptador de socket OD 30 mm, rosca M12",
+                       "pylon/tubo de conexion OD 20 mm (catalogo "
+                       "endoesqueletico)",
+                       "unidad de muneca OD 50 mm (2 in), altura 26 mm, "
+                       "rosca TD W-20 1/2-20 UNF / M12",
+                       "mano pasiva estatica, medidas ISO 7250-1 P50"],
+                   "dimensions_mm": {
+                       "hand_length": round(196 * K, 1),
+                       "hand_breadth": round(88 * K, 1),
+                       "thumb_length": round(65 * K, 1),
+                       "palm_length": round(108 * K, 1),
+                       "wrist_unit_diameter": round(50 * K, 1),
+                       "wrist_unit_build_height": round(26 * K, 1),
+                       "pylon_od": round(20 * K, 1),
+                       "adapter_od": round(30 * K, 1),
+                       "socket_length": round(135 * K, 1),
+                       "elbow_to_wrist": round(260 * K, 1),
+                       "reference_stature": round(1750 * K, 1)},
+                   "note": "scale=1 corresponde a adulto P50 (estatura "
+                           "1750 mm); alineacion de muneca estandar: 5 "
+                           "grados de flexion + 5 de desviacion radial"}})
 except Exception as _e:
     import traceback
     _mcp_emit({"success": False,

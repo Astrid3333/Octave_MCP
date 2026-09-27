@@ -296,7 +296,7 @@ def main() -> int:
     resp = create_prosthesis_operation(conn, "transradial", "right", 1.0)
     cp = payload(resp)
     objs_r = cp.get("objects") or []
-    bb_r = (next((o for o in objs_r if o.get("name") == "Mano"), {}) or {}).get("bbox") or []
+    bb_r = (next((o for o in objs_r if o.get("name") == "Mano_Pasiva"), {}) or {}).get("bbox") or []
     ok_r = (cp.get("success") is True and len(objs_r) >= 4
             and all(o.get("volume", 0) > 0 for o in objs_r)
             and len(bb_r) == 6 and bb_r[1] > 22.0)
@@ -307,7 +307,7 @@ def main() -> int:
     resp2 = create_prosthesis_operation(conn, "transradial", "left", 0.8)
     cp2 = payload(resp2)
     objs_l = cp2.get("objects") or []
-    bb_l = (next((o for o in objs_l if o.get("name") == "Mano"), {}) or {}).get("bbox") or []
+    bb_l = (next((o for o in objs_l if o.get("name") == "Mano_Pasiva"), {}) or {}).get("bbox") or []
     ok_l = (cp2.get("success") is True and len(objs_l) >= 4
             and len(bb_l) == 6 and bb_l[0] < -22.0
             and cp2.get("total_volume", 0) < cp.get("total_volume", 0))
