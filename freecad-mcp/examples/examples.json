@@ -186,12 +186,12 @@
   },
   {
    "id": "pierna-transfemoral",
-   "name": "Pierna completa transfemoral",
-   "description": "Prototipo de pierna completa transfemoral con rodilla policentrica de 4 barras (mayor movilidad que la monoaxial): socket de muslo con 11 secciones elipticas y brim anterior inclinado 18 grados, plataforma femoral con pernos en (30,406) y (-30,406), cruceta tibial con pernos en (14,374) y (-38,374), barras anterior y posterior con ojos articulados, placa adaptadora chaflanada, pylon de titanio conico, adaptador de tarso, tornillos hex con arandelas, y pie SACH por loft de 6 secciones. Demo de flexion con cinematica inversa (IK) resuelta a 0, 15, 30 y 45 grados.",
+   "name": "Pierna completa transfemoral (print-ready, rodilla 4 barras)",
+   "description": "Prototipo print-ready de pierna transfemoral con rodilla policentrica de 4 barras: socket de muslo con 11 secciones elipticas y brim anterior 18 grados, plataforma femoral (76x15x12) con pernos en (30,406) y (-30,406), cruceta tibial con pernos en (14,374) y (-38,374), barras con ojos taladrados r5.3 (holgura radial 0.3 mm sobre pernos r5), adaptador con bolsillos de holgura, pylon conico, adaptador de tarso y pie SACH. 13 pares de piezas moviles verificados sin choque (0.000 mm3); 11 STL listos para slicer en examples/stl/. Demo de flexion con IK a 0, 15, 30 y 45 grados.",
    "units": "mm",
    "created": "2026-09-27",
-   "approved": false,
-   "approval_rounds": 0,
+   "approved": true,
+   "approval_rounds": 1,
    "file": "pierna_transfemoral.FCStd",
    "previews": [
     "pierna_lado.png",
@@ -223,7 +223,7 @@
      ]
     },
     "rodilla": {
-     "tipo": "policentrica de 4 barras (IK exacta)",
+     "tipo": "policentrica de 4 barras (IK exacta, print-ready)",
      "pernos_femorales_mm": [
       [
        30.0,
@@ -245,19 +245,21 @@
       ]
      ],
      "perno_r_mm": 5.0,
+     "taladro_ojo_r_mm": 5.3,
+     "holgura_radial_mm": 0.3,
      "plataforma_muslo_mm": [
       76,
-      56,
-      16
+      15,
+      12
      ],
      "cruceta_tibia_mm": [
       68,
-      36,
+      15,
       14
      ],
      "tallo_tibia_mm": [
       28,
-      36,
+      15,
       28
      ],
      "barra_ant_largo_mm": 35.8,
@@ -266,12 +268,13 @@
       8,
       7
      ],
-     "ojo_r_mm": 4.5,
+     "ojo_r_mm": 7.5,
      "barras_color_rgb": [
       0.78,
       0.58,
       0.16
-     ]
+     ],
+     "ensamblaje": "barras se deslizan sobre los pernos por los laterales"
     },
     "adaptador": {
      "material": "aluminio anodizado",
@@ -281,7 +284,8 @@
       24
      ],
      "chamfer_mm": 2.0,
-     "fillet_mm": 4.0
+     "fillet_mm": 4.0,
+     "bolsillos_holgura": "corte 14x50x10 en x=+-21..35, z405..415 (ojos/barras/pernos)"
     },
     "pylon": {
      "material": "titanio",
@@ -338,12 +342,12 @@
     }
    },
    "metrics": {
-    "total_volume_mm3": 1670591.0,
+    "total_volume_mm3": 1586188.0,
     "scene_bbox_mm": [
      -66.5,
      255.0,
-     -54.5,
-     54.5,
+     -54.7,
+     54.7,
      0.0,
      676.6
     ],
@@ -355,8 +359,8 @@
       "bbox": [
        -66.5,
        55.8,
-       -54.5,
-       54.5,
+       -54.7,
+       54.7,
        430.0,
        676.6
       ]
@@ -367,15 +371,15 @@
       "bbox": [
        -13.5,
        13.5,
-       -13.4,
-       13.4,
+       -13.5,
+       13.5,
        96.0,
        346.0
       ]
      },
      {
       "name": "Adaptador_TF",
-      "volume_mm3": 62264.7,
+      "volume_mm3": 55475.2,
       "bbox": [
        -30.0,
        30.0,
@@ -435,19 +439,19 @@
      },
      {
       "name": "Rodilla_Muslo",
-      "volume_mm3": 68455.7,
+      "volume_mm3": 19413.4,
       "bbox": [
        -38.0,
        38.0,
-       -28.0,
-       28.0,
+       -22.0,
+       22.0,
        394.0,
        411.0
       ]
      },
      {
       "name": "Rodilla_Tibia",
-      "volume_mm3": 56696.6,
+      "volume_mm3": 27655.3,
       "bbox": [
        -46.0,
        22.0,
@@ -459,29 +463,61 @@
      },
      {
       "name": "Barra_Ant",
-      "volume_mm3": 3083.2,
+      "volume_mm3": 3318.3,
       "bbox": [
-       9.5,
-       34.5,
+       6.5,
+       37.5,
        8.0,
        20.0,
-       369.5,
-       410.5
+       366.5,
+       413.5
       ]
      },
      {
       "name": "Barra_Pst",
-      "volume_mm3": 2926.8,
+      "volume_mm3": 3161.9,
       "bbox": [
-       -42.5,
-       -25.5,
+       -45.5,
+       -22.5,
        -20.0,
        -8.0,
-       369.5,
-       410.5
+       366.5,
+       413.5
       ]
      }
     ]
+   },
+   "print": {
+    "stl_dir": "stl/",
+    "piezas": [
+     "Socket_TF",
+     "Adaptador_TF",
+     "Rodilla_Muslo",
+     "Rodilla_Tibia",
+     "Barra_Ant",
+     "Barra_Pst",
+     "Pylon_TF",
+     "Adaptador_Tarso",
+     "Tornillos_Pie",
+     "Arandelas_Pie",
+     "Pie_SACH"
+    ],
+    "verificacion": "13/13 pares moviles sin choque (<=0.001 mm3); 11/11 STL solid",
+    "orientacion_sugerida": {
+     "Rodilla_Muslo": "plataforma en cama (pernos horizontales: sin soporte bajo)",
+     "Rodilla_Tibia": "cruceta en cama (tallo vertical)",
+     "Barra_Ant": "canto (ojo r7.5: taladro vertical)",
+     "Barra_Pst": "canto (ojo r7.5: taladro vertical)",
+     "Socket_TF": "boca arriba (pared 5 mm)",
+     "Pie_SACH": "planta en cama",
+     "Pylon_TF": "vertical"
+    },
+    "limite_cama_mm": [
+     280,
+     68,
+     677
+    ],
+    "nota": "pie 280 mm: en cama de 220 usar diagonal (>=311 mm) o partir"
    }
   }
  ]
