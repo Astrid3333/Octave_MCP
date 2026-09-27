@@ -23,7 +23,7 @@ métricas verificada y previews renderizadas. Unidades en mm.
 | `Rodilla_Tibia` | 27 655 | **PETG** o nylon | Cruceta en cama, tallo vertical |
 | `Barra_Ant` | 3 318 | **PETG** o nylon (ductilidad) | En canto; taladro Ø10.6 → desliza sobre perno Ø10 |
 | `Barra_Pst` | 3 162 | **PETG** o nylon | Igual que anterior |
-| `Pylon_TF` | 122 980 | **PETG al 100 % de relleno** (o sustituir por tubo de Al Ø27×2) | Vertical; en servicio real el pylon es de titanio — la pieza impresa es maqueta |
+| `Pylon_TF` | 122 980 | **Fibra de carbono** (tubo Ø27×2) — material final; impreso en PETG al 100 % sólo como maqueta | Vertical |
 | `Adaptador_Tarso` | 59 245 | PETG o ABS | Chaflán 2 + fillet 4 |
 | `Tornillos_Pie` | 383 | PETG o **tornillería real M6** | Cabeza hex, 4 uds |
 | `Arandelas_Pie` | 293 | PETG o arandelas metálicas M6 | 4 uds |
