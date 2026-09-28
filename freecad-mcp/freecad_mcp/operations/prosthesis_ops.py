@@ -7,6 +7,19 @@ Tipos soportados:
   - ``transradial``: prótesis endoesqueletal modular según normas ISO
     (socket Muenster, adaptador OD30, pylon OD20, unidad de muneca OD50,
     mano pasiva con medidas ISO 7250-1 P50), con lado (izq/der) y escala.
+
+Integración K-1 Hand (en progreso):
+  - Prototipo verificado: K-1 Hand de Evan Kuester (e-NABLE, GPLv3).
+  - Raw STLs en ``examples/stl/k1_hand/`` (Palm, Finger_X, Pinkie, Thumb,
+    Wrist, FingerPins). Fusionar offline con transformations conocidas para
+  obtener ``mano_k1_ensamblada.stl`` y vendorizar bajo GPLv3 con atribución.
+  Cuando esté vendorizado, ``create_prosthesis`` puede importar la malla →
+  Part shape ``Mano_Pasiva``, escalar factor 1.08 a 196 mm (P50), orientar
+  dedos −z / pulgar +x/+y, mirror X para ``side=left``, y actualizar asserts
+  (der ``xmax > 22``, izq ``xmin < −22``, z 44..240) y standards (citar K-1
+  + dimensiones reales).
+  - Flujos pending: merge offline → vendor → actualizar ops → tests → push.
+  - Ver notas `notes/2026-09-27.md` lección 26.
 """
 
 from __future__ import annotations

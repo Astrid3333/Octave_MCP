@@ -42,6 +42,57 @@ rutas absolutas) y `load_example(id)` (abre el FCStd en FreeCAD). Ejemplos
 incluidos: `protesis-deportiva` (aprobada en 5 rondas) y
 `pierna-transfemoral` (print-ready con STL, aprobada).
 
+## 3. K-1 Hand (e-NABLE, GPLv3)
+
+**Fuente**: K-1 Hand de Evan Kuester, proyecto e-NABLE, licencia GPLv3.
+**Descripción**: Mano antropomórfica verificada, estéticamente elegante,
+en uso en el catálogo e-NABLE y colección NIH 3D. No usa hardware metálico;
+cordones embutidos. Requiere **atribución + nota de licencia GPLv3** para el
+asset vendoreado (separado del código MIT del repo).
+
+**Ensamblaje actual en FreeCAD** (doc `K1_Ensamble`, estado activo):
+- 4 dedos (índice, mayor, anular, meñique) montados en ranuras knuckle de la palma
+  con arco MCP anatómico (z‑top: índice 103.7, medio 105.6, anular 102.4,
+  meñique 96). Bases sentadas en taladros ∥x del palm (y = 29.6/5.5 r≈2.7,
+  y = 28.5; z = 60).
+- Pulgar posicionado sobre post bracket palm (x world centro ≈199.07, y world
+  centro ≈2.616, z 43–109, rotation identidad). Socket cuneiforme abierta hacia
+  +z; abducción −30° alrededor X para tilt outward.
+- Muñeca (Muneca): omitida del merge final; nuestro socket transradial cubre
+  la articulación. Pieza original de cama: x[130.2,142.2] y[−27.7,−7.2] z[0,5.8].
+- **Largo ensamblado aproximado**: 182 mm → escala factor 1.08 a 196 mm para P50
+  (P50 = 1750 mm adulto). Factor de escala `scale=1` en `create_prosthesis`.
+
+**Dimensiones ISO del emit** (mantener):
+ISO 22523:2006, ISO 8548-3:2025, ISO 8549, ISO 13405-3, ISO 7250-1:2017,
+ISO 9999 (06 18-06 27). ISO 10328 NO aplica (miembro inferior). Cotas estándar:
+socket Muenster; adaptador OD30 M12; pylon OD20; muñeca Ø50 h26 TD W-20; mano
+P50 196×88, palma 108, pulgar 65, dedos 82/88/78/63.
+
+**Cita y licencia**: asset vendoreado debe incluir fichero `LICENSE` GPLv3 con
+texto Atribución: "K-1 Hand by Evan Kuester, e-NABLE, GPLv3". El código del
+repo sigue bajo licencia MIT.
+
+**Estado de la integración**:
+- Raw STLs (`Palm.stl`, `Finger_X.stl`, `Pinkie.stl`, `Thumb.stl`,
+  `Wrist.stl`, `FingerPins.stl`) disponibles en `examples/stl/k1_hand/`
+  (copia de trabajo; los originales estaban en `/tmp/opencode/proto/` de la
+  sesión actual y no persisten en git).
+- Merge offline + boolean union pendiente (next step): generar
+  `mano_k1_ensamblada.stl`, actualizar `create_prosthesis` para importar malla
+  → Part shape `Mano_Pasiva`, escalar a 196 mm (factor 1.08), orientar dedos
+  −z / pulgar +x/+y, mirror X para `side=left`, actualizar asserts/standards.
+- Tests actuales (`test_extended_tools.py` 29/29) siguen basándose en `Mano_Pasiva`
+  diseño original; una vez mergeado y vendorizado el K-1 Hand, se actualizarán
+  los asserts (der `xmax > 22`, izq `xmin < −22`, z 44..240) y los standards.
+
+**Previews**: foto de referencia `K1_assembled.jpg` (descargada de NIH3D);
+pueden generarse renders mediante `free-cad_get_view` (Isometric/ Front/ Right)
+mientras el doc `K1_Ensamble` está activo.
+
+**Cómo citar**: "K-1 Hand, Evan Kuester, e-NABLE, GPLv3". Ver `LICENSE` en el
+directorio `examples/stl/k1_hand/` cuando esté vendorizado.
+
 ## Modificaciones respecto al upstream
 
 1. **Operaciones nuevas** en `operations/extended.py` (snippets Python que
